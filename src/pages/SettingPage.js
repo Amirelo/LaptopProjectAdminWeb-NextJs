@@ -3,7 +3,7 @@
 export default function SettingPage() {
     return (
         <>
-            <div>Product page</div>
+            <div>Settings page</div>
         </>
 
     )

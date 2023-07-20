@@ -18,7 +18,7 @@ export default function NavigationBar() {
   return (
     <>
       {/* Navigation */}
-      <nav className='flex flex-col w-72 h-full bg-inputBackgroundColor border-inputBorderColor border items-center fixed'>
+      <nav className='flex flex-col w-72 h-full bg-inputBackgroundColor border-inputBorderColor border items-center fixed overflow-y-auto'>
         <div className='flex flex-row items-center mt-7'>
           <Image width={32} height={32} className='mr-2' alt='App icon' src='/static/logo.png' />
           <span className="font-bold">Store </span>

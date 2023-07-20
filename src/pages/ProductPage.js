@@ -3,28 +3,50 @@
 import { getAllProduct } from "@/services/AppService";
 import { useEffect, useState } from "react"
 import Image from "next/image";
+import { priceFormat } from "@/utils/helper";
+import PaginationTab from "@/components/PaginationTab";
 
 
 export default function ProductPage() {
     const [listProducts, setListProducts] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemPerPage, setItemPerPage] = useState(5);
+    const [pageCount, setPageCount] = useState(0)
+
     const [isLoading, setIsLoading] = useState(false);
 
-    const statusNumToText = {
-        0: "Banned",
-        1: "Active"
+    const onPageChange = (page) => {
+        setCurrentPage(page);
     }
+
+    const onItemPerPageChange =(event) => {
+        setItemPerPage(event.target.value);
+    }
+
+    
+
 
     const initData = async () => {
         setIsLoading(true)
         const prodRes = await getAllProduct();
         setListProducts(prodRes.data);
-        console.log("Product", prodRes.data)
+
+        setPageCount(Math.ceil(prodRes.data.length / itemPerPage))
+        console.log("Count:", Math.ceil(prodRes.data.length / itemPerPage));
+
         setIsLoading(false);
     }
 
     useEffect(() => {
         initData();
     }, [])
+
+    useEffect(()=>{
+        setIsLoading(true)
+        setPageCount(listProducts.length / itemPerPage)
+        console.log("New item amount:",itemPerPage)
+        setIsLoading(false)
+    },[itemPerPage, listProducts.length])
 
     return (
         isLoading == false ?
@@ -33,11 +55,12 @@ export default function ProductPage() {
 
 
                     <div className="flex flex-row">
-                        <p>Show </p>
-                        <select>
-                            <option>10</option>
-                            <option>15</option>
-                            <option>20</option>
+                        <p>Show&nbsp;</p>
+                        <select onChange={onItemPerPageChange} defaultValue={5} className="px-4 border">
+                        <option value={5}>5</option>
+                            <option value={10}>10</option>
+                            <option value={15}>15</option>
+                            <option value={20}>20</option>
                         </select>
                         <p>&nbsp;items</p>
                     </div>
@@ -45,22 +68,22 @@ export default function ProductPage() {
 
                     <table className="w-full mt-10">
                         <tr className="">
-                            <th className="border">#</th>
+                            <th className="border w-10">#</th>
                             <th className="border">Image</th>
                             <th className="border">Product Name</th>
-                            <th className="border">Current Price</th>
+                            <th className="border w-1/5">Current Price</th>
                             <th className="border">Quantity</th>
                             <th className="border">Rating</th>
-                            <th className="border" colSpan={2}>Action</th>
+                            <th className="border w-1/12" colSpan={2}>Action</th>
                         </tr>
 
-                        {listProducts.map(product => {
+                        {listProducts.slice((currentPage - 1) * itemPerPage, itemPerPage * currentPage).map(product => {
                             return (
                                 <tr className="even:bg-sky-50 " key={product.productID}>
                                     <td className="text-center border">{product.productID}</td>
-                                    <td className="text-center border block py-3"><Image className="w-fit h-fit m-auto rounded-md p-1" objectFit="cover" width={100} height={100}  src={product.productImageLink} alt="Product image" /></td>
+                                    <td className="text-center border block py-3"><Image className="w-fit h-fit m-auto rounded-md p-1" objectFit="cover" width={100} height={100} src={product.productImageLink} alt="Product image" /></td>
                                     <td className=" border">{product.productName}</td>
-                                    <td className="text-center border">{product.currentPrice}</td>
+                                    <td className="text-center border">{priceFormat(product.currentPrice)}</td>
                                     <td className="text-center border">{product.productQuantity}</td>
                                     <td className="text-center border">{product.totalRating}</td>
                                     <td className="text-center border">
@@ -83,6 +106,9 @@ export default function ProductPage() {
                             )
                         })}
                     </table>
+
+                    <PaginationTab pageCount={pageCount} onPageChange={setCurrentPage}/>
+                    <div className="h-32"></div>
                 </div>
             </>
             : <></>

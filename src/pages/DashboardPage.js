@@ -16,14 +16,27 @@ export default function DashboardPage() {
     const [listUsers, setListUsers] = useState([]);
     const [listUserOrders, setListUserOrders] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const currentDate = new Date().getMonth();
+    const month = ["January","Febuary","March","April","May","June","July","August","September","October","November","December",]
+
+    const checkMonth =(receivedMonth) => {
+        if((currentDate+receivedMonth)<12){
+            return month[currentDate+receivedMonth]
+        } else{
+            return month[currentDate+receivedMonth-12]
+        }
+    }
 
     const data = {
-        labels: ['February', 'March', 'April', 'May', 'June', 'July'],
+         
+
+        labels: [checkMonth(0), checkMonth(1), checkMonth(2), checkMonth(3), checkMonth(4), checkMonth(5)],
         datasets: [
             {
-                label: 'GitHub Commits',
-                backgroundColor: '#f87979',
+                label: 'Sales',
+                backgroundColor: ['#87bc45','#b33dc6','#b3d4ff'],
                 data: [40, 20, 12, 39, 10, 40, 39, 80, 40],
+
             }
         ]
     }
