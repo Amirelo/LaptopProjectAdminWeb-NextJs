@@ -6,10 +6,10 @@ import { getAllProduct, getAllUserOrders, getAllUsers } from '@/services/AppServ
 import { useEffect, useState } from 'react';
 import ProductListItem from '@/components/ProductListItem';
 import UserOrderList from '@/components/UserOrderList';
-import { CategoryScale, ArcElement,Chart } from 'chart.js';
-import { Pie } from 'react-chartjs-2';
+import { ArcElement, BarController, BarElement, CategoryScale, Chart, LinearScale } from 'chart.js';
+import { Bar, Pie } from 'react-chartjs-2';
 
-Chart.register(ArcElement)
+Chart.register(LinearScale, CategoryScale, BarElement,ArcElement)
 
 export default function DashboardPage() {
     const [listProducts, setListProducts] = useState([]);
@@ -18,16 +18,15 @@ export default function DashboardPage() {
     const [isLoading, setIsLoading] = useState(false);
 
     const data = {
-        labels: "First dataset",
+        labels: ['February', 'March', 'April', 'May', 'June', 'July'],
         datasets: [
             {
-                label: "My First dataset",
-                backgroundColor: "rgb(255, 99, 132)",
-                borderColor: "rgb(255, 99, 132)",
-                data: [0, 10, 5, 2, 20, 30, 45],
-            },
-        ],
-    };
+                label: 'GitHub Commits',
+                backgroundColor: '#f87979',
+                data: [40, 20, 12, 39, 10, 40, 39, 80, 40],
+            }
+        ]
+    }
 
     const initData = async () => {
         setIsLoading(true)
@@ -44,7 +43,7 @@ export default function DashboardPage() {
         setIsLoading(false)
     }
 
-    <Pie data={listProducts}></Pie>
+
 
 
 
@@ -56,7 +55,6 @@ export default function DashboardPage() {
     return (
         isLoading == false ?
             <>
-
                 {/* Analytics */}
                 <div className='mt-16'>
                     <p className='font-bold'>Analytics</p>
@@ -69,37 +67,77 @@ export default function DashboardPage() {
                     </div>
                 </div>
 
-
-                <div className='mt-8'>
-                    <p className='font-bold'>Order need processing</p>
-                    <div className='w-2/5 min-h-100 bg-inputBackgroundColor border border-inputBorderColor mt-3'>
-                        <table className='w-full border table-fixed'>
-                            <tr className='border'>
-                                <th>Order number</th>
-                                <th>Order date</th>
-                                <th>Status</th>
-                            </tr>
-                            {listUserOrders.map(userOrder => {
-                                console.log("item:", userOrder)
-                                if (userOrder.status == 1) {
-                                    return (
-                                        <tr key={userOrder.userOrderID}>
-                                            <td className='border text-center '>TSTRN{userOrder.userOrderID}</td>
-                                            <td className='border text-center'>{userOrder.pendingDate}</td>
-                                            <td className='text-processColor border text-center hover:font-bold'><button>processing</button></td>
-                                        </tr>
-                                    )
+                <div className='flex flex-row h-64 mt-8'>
+                    <div className=' w-2/5'>
+                        <p className='font-bold'>Latest orders</p>
+                        <div className='min-h-100 bg-inputBackgroundColor border border-inputBorderColor mt-3 '>
+                            <table className='w-full border table-fixed'>
+                                <tr className='border'>
+                                    <th>Order number</th>
+                                    <th>Order date</th>
+                                    <th>Status</th>
+                                </tr>
+                                {listUserOrders.map(userOrder => {
+                                    console.log("item:", userOrder)
+                                    if (userOrder.status == 1) {
+                                        return (
+                                            <tr key={userOrder.userOrderID}>
+                                                <td className='border text-center '>TSTRN{userOrder.userOrderID}</td>
+                                                <td className='border text-center'>{userOrder.pendingDate}</td>
+                                                <td className='text-processColor border text-center hover:font-bold'><button>processing</button></td>
+                                            </tr>
+                                        )
+                                    }
                                 }
-                            }
-                            )
+                                )
 
-                            }
-                        </table>
+                                }
+                            </table>
 
+                        </div>
+                    </div>
+                    <div className='w-3/5 h-64 mx-10'>
+                        <Bar options={{ maintainAspectRatio: false }} data={data}></Bar>
                     </div>
                 </div>
-                <Pie data={data}></Pie>
-                <ProductListItem productData={(listProducts)} />
+
+                <div className='flex flex-row h-64 mt-10'>
+                <div className='w-2/5 h-64'>
+                        <Pie options={{ maintainAspectRatio: false }} data={data}></Pie>
+                    </div>
+                    <div className=' w-3/5 mx-4'>
+                        <p className='font-bold'>Top Products</p>
+                        <div className='min-h-100 bg-inputBackgroundColor border border-inputBorderColor mt-3 '>
+                            <table className='w-full border table-fixed'>
+                                <tr className='border'>
+                                    <th>Order number</th>
+                                    <th>Order date</th>
+                                    <th>Status</th>
+                                </tr>
+                                {listUserOrders.map(userOrder => {
+                                    console.log("item:", userOrder)
+                                    if (userOrder.status == 1) {
+                                        return (
+                                            <tr key={userOrder.userOrderID}>
+                                                <td className='border text-center '>TSTRN{userOrder.userOrderID}</td>
+                                                <td className='border text-center'>{userOrder.pendingDate}</td>
+                                                <td className='text-processColor border text-center hover:font-bold'><button>processing</button></td>
+                                            </tr>
+                                        )
+                                    }
+                                }
+                                )
+
+                                }
+                            </table>
+
+                        </div>
+                    </div>
+                    
+                </div>
+
+                <div className='h-12'></div>
+
             </>
             : <></>
 

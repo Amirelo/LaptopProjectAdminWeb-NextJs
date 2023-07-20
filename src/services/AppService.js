@@ -14,3 +14,8 @@ export const getAllUserOrders = async() => {
     const res = await axiosInstance.get('/userOrder/get-all-user-orders.php');
     return res.data;
 }
+
+export const getAllBrands = async() => {
+    const res = await axiosInstance.get('/brand/get-all-brands.php');
+    return res.data;
+}
