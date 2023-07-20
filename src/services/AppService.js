@@ -19,3 +19,32 @@ export const getAllBrands = async() => {
     const res = await axiosInstance.get('/brand/get-all-brands.php');
     return res.data;
 }
+
+export const getAllScreens = async() => {
+    const res = await axiosInstance.get('/screen/get-all-screens.php');
+    return res.data;
+}
+
+
+export const getAllProcessors = async() => {
+const res = await axiosInstance.get('/processor/get-all-processors.php');
+    return res.data;
+}
+
+export const getAllMemories = async() => {
+    const res = await axiosInstance.get('/memory/get-all-memories.php');
+    return res.data;
+}
+
+export const getAllStorages = async() => {
+    const res = await axiosInstance.get('/storage/get-all-storages.php');
+    return res.data;
+}
+
+export const getAllOperSys = async() => {
+    const res = await axiosInstance.get('/operatingSystem/get-all-operating-systems.php');
+    return res.data;
+}
+
+
+
