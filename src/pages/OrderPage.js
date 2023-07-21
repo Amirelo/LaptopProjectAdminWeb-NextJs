@@ -1,5 +1,6 @@
 'use-client'
 
+import ActionTop from "@/components/ActionTop";
 import PaginationTab from "@/components/PaginationTab";
 import { getAllUserOrders } from "@/services/AppService";
 import { useEffect, useState } from "react"
@@ -18,6 +19,7 @@ export default function OrderPage() {
 
     const onItemPerPageChange = (event) => {
         setItemPerPage(event.target.value);
+        setPageCount(listUserOrders.length / event.target.value)
     }
 
     const statusNumToText = {
@@ -52,16 +54,8 @@ export default function OrderPage() {
                     <div className="flex flex-row items-center justify-between pt-4">
 
                         <button onClick={() => onEditIconPressed()} className="bg-mainColor px-6 py-3 rounded-md text-white hover:font-bold">Add</button>
-                        <div className="flex flex-row">
-                            <p>Show&nbsp;</p>
-                            <select onChange={onItemPerPageChange} defaultValue={5} className="px-4 border">
-                                <option value={5}>5</option>
-                                <option value={10}>10</option>
-                                <option value={15}>15</option>
-                                <option value={20}>20</option>
-                            </select>
-                            <p>&nbsp;items</p>
-                        </div>
+                        <ActionTop onEditPressed={""} onItemPerPageChange={onItemPerPageChange}/>
+
                     </div>
 
                     <table className="w-full mt-10">

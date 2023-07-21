@@ -28,6 +28,7 @@ export default function ProductPage() {
 
     const onItemPerPageChange = (event) => {
         setItemPerPage(event.target.value);
+        setPageCount(listProducts.length / event.target.value)
     }
 
     const onConfirmDeletePressed = async () => {
@@ -82,12 +83,6 @@ export default function ProductPage() {
         initData();
     }, [dataChange])
 
-    useEffect(() => {
-        setIsLoading(true)
-        setPageCount(listProducts.length / itemPerPage)
-        console.log("New item amount:", itemPerPage)
-        setIsLoading(false)
-    }, [itemPerPage, listProducts.length])
 
     return (
         isLoading == false ?

@@ -21,6 +21,7 @@ export default function BrandPage() {
 
     const onItemPerPageChange = (event) => {
         setItemPerPage(event.target.value);
+        setPageCount(listBrands.length / event.target.value)
     }
 
 
@@ -39,6 +40,7 @@ export default function BrandPage() {
     useEffect(() => {
         initData();
     }, [])
+
 
     return (
         isLoading == false ?

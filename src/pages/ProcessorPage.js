@@ -27,6 +27,11 @@ export default function ProcessorPage() {
         setIsLoading(false);
     }
 
+    const onItemPerPageChange = (event) => {
+        setItemPerPage(event.target.value);
+        setPageCount(listProcessors.length / event.target.value)
+    }
+
     const checkStatus = (status) => {
         if(status == -1){
             return "None"
@@ -42,7 +47,7 @@ export default function ProcessorPage() {
         isLoading == false ?
             <>
                 <div className="mr-3">
-                <ActionTop onEditPressed={""} onItemPerPageChange={(event)=>setItemPerPage(event.target.value)}/>
+                <ActionTop onEditPressed={""} onItemPerPageChange={onItemPerPageChange}/>
 
 
 

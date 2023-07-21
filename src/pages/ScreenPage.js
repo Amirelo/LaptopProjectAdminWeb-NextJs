@@ -27,6 +27,11 @@ export default function ScreenPage() {
         setIsLoading(false);
     }
 
+    const onItemPerPageChange = (event) => {
+        setItemPerPage(event.target.value);
+        setPageCount(listScreens.length / event.target.value)
+    }
+
     useEffect(() => {
         initData();
     }, [])
@@ -36,7 +41,7 @@ export default function ScreenPage() {
             <>
                 <div className="mr-3">
 
-                <ActionTop onEditPressed={""} onItemPerPageChange={(event)=>setItemPerPage(event.target.value)}/>
+                <ActionTop onEditPressed={""} onItemPerPageChange={onItemPerPageChange}/>
 
                     <table className="w-full mt-10">
                         <tr className="">

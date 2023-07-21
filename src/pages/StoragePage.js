@@ -27,6 +27,11 @@ export default function StoragePage() {
         setIsLoading(false);
     }
 
+    const onItemPerPageChange = (event) => {
+        setItemPerPage(event.target.value);
+        setPageCount(listStorages.length / event.target.value)
+    }
+
     useEffect(() => {
         initData();
     }, [])
@@ -35,9 +40,7 @@ export default function StoragePage() {
         isLoading == false ?
             <>
                 <div className="mr-3">
-                <ActionTop onEditPressed={""} onItemPerPageChange={(event)=>setItemPerPage(event.target.value)}/>
-
-
+                <ActionTop onEditPressed={""} onItemPerPageChange={onItemPerPageChange}/>
 
                     <table className="w-full mt-10">
                         <tr className="">

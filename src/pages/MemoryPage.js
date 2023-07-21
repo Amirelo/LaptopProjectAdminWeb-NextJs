@@ -15,6 +15,11 @@ export default function MemoryPage() {
     const [itemPerPage, setItemPerPage] = useState(5);
     const [pageCount, setPageCount] = useState(0);
 
+    const onItemPerPageChange = (event) => {
+        setItemPerPage(event.target.value);
+        setPageCount(listMemories.length / event.target.value)
+    }
+
     const initData = async () => {
         setIsLoading(true)
         const memoryRes = await getAllMemories();
@@ -35,7 +40,7 @@ export default function MemoryPage() {
         isLoading == false ?
             <>
                 <div className="mr-3">
-                <ActionTop onEditPressed={""} onItemPerPageChange={(event)=>setItemPerPage(event.target.value)}/>
+                <ActionTop onEditPressed={""} onItemPerPageChange={onItemPerPageChange}/>
 
                     <table className="w-full mt-10">
                         <tr className="">

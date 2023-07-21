@@ -26,6 +26,11 @@ export default function OSPage() {
 
         setIsLoading(false);
     }
+    
+    const onItemPerPageChange = (event) => {
+        setItemPerPage(event.target.value);
+        setPageCount(listOS.length / event.target.value)
+    }
 
     const checkStatus = (status) => {
         if(status == -1){
@@ -42,7 +47,7 @@ export default function OSPage() {
         isLoading == false ?
             <>
                 <div className="mr-3">
-                <ActionTop onEditPressed={""} onItemPerPageChange={(event)=>setItemPerPage(event.target.value)}/>
+                <ActionTop onEditPressed={""} onItemPerPageChange={onItemPerPageChange}/>
 
                     <table className="w-full mt-10">
                         <tr className="">
