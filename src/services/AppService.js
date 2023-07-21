@@ -60,6 +60,57 @@ export const updateProduct = async (
     return res.data;
 }
 
+export const insertProdct = async(
+    productName, 
+    productPrice, 
+    productQuantity, 
+    releasedDate, 
+    totalRating, 
+    modelCode, 
+    onSale,
+    currentPrice, 
+    manufacturer, 
+    warranty, 
+    sold, 
+    length,
+    width, 
+    height, 
+    weight, 
+    status, 
+    brandID,
+    screenID,
+    operatingSystemID,
+    processorID,
+    memoryID,
+    storageID) => {
+        const data = {
+            productName:productName,
+            productPrice:productPrice,
+            productQuantity:productQuantity,
+            releasedDate:releasedDate,
+            totalRating:totalRating,
+            modelCode:modelCode,
+            onSale:onSale,
+            currentPrice:currentPrice,
+            manufacturer:manufacturer,
+            warranty:warranty,
+            sold:sold,
+            length:length,
+            width:width,
+            height:height,
+            weight:weight,
+            status:status,
+            brandID:brandID,
+            screenID:screenID,
+            operatingSystemID:operatingSystemID,
+            processorID:processorID,
+            memoryID:memoryID,
+            storageID:storageID
+        }
+        const res = await axiosInstance.post('/product/insert-product-info.php',data);
+        return res.data;
+}
+
 export const getAllUsers = async () => {
     const res = await axiosInstance.get('/user/get-all-users.php');
     return res.data;
@@ -108,6 +159,14 @@ export const updateProductStatus = async (productID, status) => {
         status: status
     }
     const res = await axiosInstance.post('/product/update-product-status.php', data);
+    return res.data;
+}
+
+export const getProductImagesByProdID = async(productID) => {
+    const data = {
+        productID:productID
+    }
+    const res = await axiosInstance.post('/productImage/get-product-images-by-product-id.php',data);
     return res.data;
 }
 

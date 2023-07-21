@@ -1,4 +1,4 @@
-import { getAllBrands, getAllMemories, getAllOperSys, getAllProcessors, getAllScreens, getAllStorages, updateProduct } from "@/services/AppService";
+import { getAllBrands, getAllMemories, getAllOperSys, getAllProcessors, getAllScreens, getAllStorages, insertProdct, updateProduct } from "@/services/AppService";
 import { dataCheck } from "@/utils/helper";
 import { memo, useEffect, useState } from "react"
 
@@ -35,6 +35,7 @@ export default function EditProductTab({ onBackgroundPressed, onDeletePress, ite
     const [status, setStatus] = useState(item ? item.status : "");
 
     const onEditButtonPressed = async () => {
+        if(item!=null){
         const res = await updateProduct(
             item.productID,
             itemName,
@@ -60,6 +61,11 @@ export default function EditProductTab({ onBackgroundPressed, onDeletePress, ite
             currentMemory.memoryID,
             currentStorage.storageID);
         console.log("Result:", res);
+        
+        } else{
+            const res = await insertProdct(itemName,originPrice,prodQuan,rlsDate,0,modelCode,onSale,curPrice,manufacturer, warranty,sold,prodLength,prodWidth,prodWeight,prodWeight,status,currentBrand.brandID,currentScreen.screenID,currentOS.operatingSystemID,currentProcessor.processorID,currentMemory.memoryID,currentStorage.storageID);
+            console.log("Result:",res)
+        }
         onDeletePress()
     }
 
