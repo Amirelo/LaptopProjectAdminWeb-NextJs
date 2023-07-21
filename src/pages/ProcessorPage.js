@@ -3,17 +3,27 @@
 import { getAllProcessors } from "@/services/AppService";
 import { useEffect, useState } from "react"
 import Image from "next/image";
+import ActionTop from "@/components/ActionTop";
+import PaginationTab from "@/components/PaginationTab";
 
 
 export default function ProcessorPage() {
     const [listProcessors, setListProcessors] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemPerPage, setItemPerPage] = useState(5);
+    const [pageCount, setPageCount] = useState(0);
+
     const initData = async () => {
         setIsLoading(true)
-        const brandRes = await getAllProcessors();
-        setListProcessors(brandRes.data);
-        console.log("Processors", brandRes.data)
+        const prosRes = await getAllProcessors();
+        setListProcessors(prosRes.data);
+        console.log("Processors", prosRes.data)
+
+        setPageCount(Math.ceil(prosRes.data.length / itemPerPage))
+        console.log("Count:", Math.ceil(prosRes.data.length / itemPerPage));
+
         setIsLoading(false);
     }
 
@@ -32,15 +42,8 @@ export default function ProcessorPage() {
         isLoading == false ?
             <>
                 <div className="mr-3">
-                    <div className="flex flex-row">
-                        <p>Show </p>
-                        <select>
-                            <option>10</option>
-                            <option>15</option>
-                            <option>20</option>
-                        </select>
-                        <p>&nbsp;items</p>
-                    </div>
+                <ActionTop onEditPressed={""} onItemPerPageChange={(event)=>setItemPerPage(event.target.value)}/>
+
 
 
                     <table className="w-full mt-10">
@@ -54,7 +57,7 @@ export default function ProcessorPage() {
                             <th className="border" colSpan={2}>Action</th>
                         </tr>
 
-                        {listProcessors.map(processor => {
+                        {listProcessors.slice((currentPage - 1) * itemPerPage, itemPerPage * currentPage).map(processor => {
                             return (
                                 <tr className="even:bg-sky-50 " key={processor.processorID}>
                                     <td className="text-center border">{processor.processorID}</td>
@@ -84,6 +87,9 @@ export default function ProcessorPage() {
                             )
                         })}
                     </table>
+                    <PaginationTab pageCount={pageCount} onPageChange={setCurrentPage} />
+                    <div className="h-32"></div>
+
                 </div>
             </>
             : <></>

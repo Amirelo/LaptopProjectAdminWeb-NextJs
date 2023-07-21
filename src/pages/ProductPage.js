@@ -12,9 +12,11 @@ import EditImageTab from "@/components/EditImageTab";
 
 export default function ProductPage() {
     const [listProducts, setListProducts] = useState([]);
+
     const [currentPage, setCurrentPage] = useState(1);
     const [itemPerPage, setItemPerPage] = useState(5);
-    const [pageCount, setPageCount] = useState(0)
+    const [pageCount, setPageCount] = useState(0);
+    
     const [showDeleteTab, setShowDeleteTab] = useState(false);
     const [currentItem, setCurrentItem] = useState({});
     const [showEditTab, setShowEditTab] = useState(false);
@@ -45,6 +47,12 @@ export default function ProductPage() {
     const onFinishedHandlingItem = () => {
         setCurrentItem(null);
         setShowEditTab(false);
+        setDataChange(!dataChange);
+    }
+
+    const onFinishedHandlingImages = () => {
+        setCurrentItem(null);
+        setShowEditImageTab(false);
         setDataChange(!dataChange);
     }
 
@@ -98,7 +106,7 @@ export default function ProductPage() {
                         <></>}
 
                     {showEditImageTab ?
-                        <EditImageTab item={currentItem} onBackgroundPressed={() => setShowEditImageTab(false)} onDeletePress={onFinishedHandlingItem} />
+                        <EditImageTab item={currentItem} onBackgroundPressed={() => [setShowEditImageTab(false),setCurrentItem([])]} onDeletePress={onFinishedHandlingImages} />
                         :
                         <></>}
 

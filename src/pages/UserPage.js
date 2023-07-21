@@ -3,15 +3,28 @@
 import { getAllUsers } from "@/services/AppService";
 import { useEffect, useState } from "react"
 import Image from "next/image";
+import PaginationTab from "@/components/PaginationTab";
 
 
 export default function UserPage() {
     const [listUsers, setListUsers] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemPerPage, setItemPerPage] = useState(5);
+    const [pageCount, setPageCount] = useState(0);
+
     const statusNumToText = {
         0: "Banned",
         1: "Active"
+    }
+
+    const onEditIconPressed = () => {
+
+    }
+
+    const onItemPerPageChange = (event) => {
+        setItemPerPage(event.target.value);
     }
 
     const initData = async () => {
@@ -19,6 +32,10 @@ export default function UserPage() {
         const userRes = await getAllUsers();
         setListUsers(userRes.data);
         console.log("User", userRes.data)
+
+        setPageCount(Math.ceil(userRes.data.length / itemPerPage))
+        console.log("Count:", Math.ceil(userRes.data.length / itemPerPage));
+
         setIsLoading(false);
     }
 
@@ -32,14 +49,19 @@ export default function UserPage() {
                 <div className="mr-3">
 
 
-                    <div className="flex flex-row">
-                        <p>Show </p>
-                        <select>
-                            <option>10</option>
-                            <option>15</option>
-                            <option>20</option>
-                        </select>
-                        <p>&nbsp;items</p>
+                    <div className="flex flex-row items-center justify-between pt-4">
+
+                        <button onClick={() => onEditIconPressed()} className="bg-mainColor px-6 py-3 rounded-md text-white hover:font-bold">Add</button>
+                        <div className="flex flex-row">
+                            <p>Show&nbsp;</p>
+                            <select onChange={onItemPerPageChange} defaultValue={5} className="px-4 border">
+                                <option value={5}>5</option>
+                                <option value={10}>10</option>
+                                <option value={15}>15</option>
+                                <option value={20}>20</option>
+                            </select>
+                            <p>&nbsp;items</p>
+                        </div>
                     </div>
 
                     <table className="w-full mt-10">
@@ -54,7 +76,7 @@ export default function UserPage() {
                             <th className="border" colSpan={2}>Action</th>
                         </tr>
 
-                        {listUsers.map(user => {
+                        {listUsers.slice((currentPage - 1) * itemPerPage, itemPerPage * currentPage).map(user => {
                             return (
                                 <tr className="even:bg-sky-50 " key={user.userId}>
                                     <td className="text-center border">{user.userId}</td>
@@ -84,6 +106,9 @@ export default function UserPage() {
                             )
                         })}
                     </table>
+                    <PaginationTab pageCount={pageCount} onPageChange={setCurrentPage} />
+                    <div className="h-32"></div>
+
                 </div>
             </>
             : <></>

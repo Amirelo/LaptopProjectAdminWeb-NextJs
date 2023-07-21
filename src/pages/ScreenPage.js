@@ -3,17 +3,27 @@
 import { getAllScreens } from "@/services/AppService";
 import { useEffect, useState } from "react"
 import Image from "next/image";
+import ActionTop from "@/components/ActionTop";
+import PaginationTab from "@/components/PaginationTab";
 
 
 export default function ScreenPage() {
     const [listScreens, setListScreens] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemPerPage, setItemPerPage] = useState(5);
+    const [pageCount, setPageCount] = useState(0);
+
     const initData = async () => {
         setIsLoading(true)
         const screenRes = await getAllScreens();
         setListScreens(screenRes.data);
         console.log("Screen", screenRes.data)
+
+        setPageCount(Math.ceil(screenRes.data.length / itemPerPage))
+        console.log("Count:", Math.ceil(screenRes.data.length / itemPerPage));
+
         setIsLoading(false);
     }
 
@@ -25,16 +35,8 @@ export default function ScreenPage() {
         isLoading == false ?
             <>
                 <div className="mr-3">
-                    <div className="flex flex-row">
-                        <p>Show </p>
-                        <select>
-                            <option>10</option>
-                            <option>15</option>
-                            <option>20</option>
-                        </select>
-                        <p>&nbsp;items</p>
-                    </div>
 
+                <ActionTop onEditPressed={""} onItemPerPageChange={(event)=>setItemPerPage(event.target.value)}/>
 
                     <table className="w-full mt-10">
                         <tr className="">
@@ -44,7 +46,7 @@ export default function ScreenPage() {
                             <th className="border" colSpan={2}>Action</th>
                         </tr>
 
-                        {listScreens.map(screen => {
+                        {listScreens.slice((currentPage - 1) * itemPerPage, itemPerPage * currentPage).map(screen => {
                             return (
                                 <tr className="even:bg-sky-50 " key={screen.screenID}>
                                     <td className="text-center border">{screen.screenID}</td>
@@ -71,6 +73,8 @@ export default function ScreenPage() {
                             )
                         })}
                     </table>
+                    <PaginationTab pageCount={pageCount} onPageChange={setCurrentPage} />
+                    <div className="h-32"></div>
                 </div>
             </>
             : <></>

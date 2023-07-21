@@ -1,4 +1,5 @@
 import { axiosInstance } from "@/utils/axios"
+import axios, { Axios } from "axios";
 
 export const getAllProduct = async () => {
     const res = await axiosInstance.get('/product/get-all-product.php');
@@ -168,6 +169,38 @@ export const getProductImagesByProdID = async(productID) => {
     }
     const res = await axiosInstance.post('/productImage/get-product-images-by-product-id.php',data);
     return res.data;
+}
+
+export const insertProductImage = async(imageLink,status,productID) =>{
+    const data = {
+        productImageLink : imageLink,
+        status : status,
+        productID:productID
+    }
+    const res = await axiosInstance.post('/productImage/insert-product-image-info.php',data);
+    return res.data;
+}
+
+export const uploadImageToImgur = async(url) => {
+    const imgurAxios = axios.create({
+        baseUrl:"https://api.imgur.com/3/image/"
+    })
+
+    const config = {
+        headers:{
+            Authorization: "Client-ID 61bda01995348f5"
+        }
+    }
+
+
+    const data= {
+        image:url.name
+    }
+    console.log("data:",data)
+    
+    const res= await imgurAxios.post('/',data,config);
+    return res;
+
 }
 
 
