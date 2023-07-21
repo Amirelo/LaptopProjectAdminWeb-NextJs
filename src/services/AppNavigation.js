@@ -14,9 +14,11 @@ import ScreenPage from "@/pages/ScreenPage";
 import SettingPage from "@/pages/SettingPage";
 import StoragePage from "@/pages/StoragePage";
 import UserPage from "@/pages/UserPage";
-import { BrowserRouter, Router, Routes, Route } from "react-router-dom";
+import { useState } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 export default function AppNavigation() {
+    const[currentSelection,setCurrentSelection] = useState();
     return (
         <div>
             <BrowserRouter>
