@@ -50,7 +50,7 @@ export default function MemoryPage() {
                             return (
                                 <tr className="even:bg-sky-50 " key={memory.memoryID}>
                                     <td className="text-center border">{memory.memoryID}</td>
-                                    <td className=" border">{memory.currentRAM + " " + memory.type + memory.speed}</td>
+                                    <td className=" border">{memory.currentRAM + " " + memory.type + " " + memory.speed}</td>
                                     <td className="text-center border ">{memory.maxSlots}</td>
                                     <td className="text-center border">{memory.availableSlots}</td>
                                     <td className="text-center border">{memory.maxRam}</td>

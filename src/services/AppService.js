@@ -31,6 +31,7 @@ const res = await axiosInstance.get('/processor/get-all-processors.php');
     return res.data;
 }
 
+
 export const getAllMemories = async() => {
     const res = await axiosInstance.get('/memory/get-all-memories.php');
     return res.data;
@@ -43,6 +44,15 @@ export const getAllStorages = async() => {
 
 export const getAllOperSys = async() => {
     const res = await axiosInstance.get('/operatingSystem/get-all-operating-systems.php');
+    return res.data;
+}
+
+export const updateProductStatus = async(productID, status) => {
+    const data = {
+        productID:productID,
+        status:status
+    }
+    const res = await axiosInstance.post('/product/update-product-status.php',data);
     return res.data;
 }
 
