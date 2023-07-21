@@ -16,7 +16,8 @@ export default function ProductPage() {
     const [pageCount, setPageCount] = useState(0)
     const [showDeleteTab, setShowDeleteTab] = useState(false);
     const [currentItem, setCurrentItem] = useState({});
-    const [showEditTab, setShowEditTab] = useState(false)
+    const [showEditTab, setShowEditTab] = useState(false);
+    const [dataChange,setDataChange] = useState(false)
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -30,11 +31,19 @@ export default function ProductPage() {
         console.log(deleteRes);
         setShowDeleteTab(false);
         setCurrentItem([]);
+        setDataChange(!dataChange);
     }
+
 
     const onDeleteIconPressed = (item) => {
         setCurrentItem(item);
         setShowDeleteTab(true);
+    }
+
+    const onFinishedHandlingItem = () => {
+        setCurrentItem(null);
+        setShowEditTab(false);
+        setDataChange(!dataChange);
     }
 
     const onEditIconPressed = (item) => {
@@ -56,7 +65,7 @@ export default function ProductPage() {
 
     useEffect(() => {
         initData();
-    }, [showDeleteTab])
+    }, [dataChange])
 
     useEffect(() => {
         setIsLoading(true)
@@ -77,7 +86,7 @@ export default function ProductPage() {
                         :
                         <></>}
                     {showEditTab ?
-                        <EditProductTab item={currentItem} onBackgroundPressed={()=>setShowEditTab(false)}/>
+                        <EditProductTab item={currentItem} onBackgroundPressed={()=>setShowEditTab(false)} onDeletePress={onFinishedHandlingItem}/>
                     :
                     <></>}
 
