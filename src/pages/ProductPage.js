@@ -16,7 +16,7 @@ export default function ProductPage() {
     const [currentPage, setCurrentPage] = useState(1);
     const [itemPerPage, setItemPerPage] = useState(5);
     const [pageCount, setPageCount] = useState(0);
-    
+
     const [showDeleteTab, setShowDeleteTab] = useState(false);
     const [currentItem, setCurrentItem] = useState({});
     const [showEditTab, setShowEditTab] = useState(false);
@@ -29,6 +29,14 @@ export default function ProductPage() {
     const onItemPerPageChange = (event) => {
         setItemPerPage(event.target.value);
         setPageCount(listProducts.length / event.target.value)
+    }
+
+    const onRevertPressed = async (item) => {
+        const reverRes = await updateProductStatus(item.productID, 1);
+        setCurrentItem({})
+        setShowDeleteTab(false)
+        console.log(reverRes)
+        setDataChange(!dataChange);
     }
 
     const onConfirmDeletePressed = async () => {
@@ -62,7 +70,7 @@ export default function ProductPage() {
         setShowEditTab(true);
     }
 
-    const onImagePressed = (item) =>{
+    const onImagePressed = (item) => {
         setCurrentItem(item);
         setShowEditImageTab(true);
     }
@@ -99,7 +107,7 @@ export default function ProductPage() {
                         <></>}
 
                     {showEditImageTab ?
-                        <EditImageTab item={currentItem} onBackgroundPressed={() => [setShowEditImageTab(false),setCurrentItem([])]} onDeletePress={onFinishedHandlingImages} />
+                        <EditImageTab item={currentItem} onBackgroundPressed={() => [setShowEditImageTab(false), setCurrentItem([])]} onDeletePress={onFinishedHandlingImages} />
                         :
                         <></>}
 
@@ -129,14 +137,14 @@ export default function ProductPage() {
                             <th className="border w-1/12" colSpan={2}>Action</th>
                         </tr>
 
-                        {listProducts.slice((currentPage - 1) * itemPerPage, itemPerPage * currentPage).map(product => {
+                        {listProducts.sort((a, b) => { return b.status - a.status }).slice((currentPage - 1) * itemPerPage, itemPerPage * currentPage).map(product => {
                             return (
-                                <tr className="even:bg-sky-50 " key={product.productID}>
+                                <tr className={product.status == 0 ? "bg-slate-500/25" : "even:bg-sky-50"} key={product.productID}>
                                     <td className="text-center border">{product.productID}</td>
 
                                     {product.productImageLink ?
                                         <td className="text-center border block py-3">
-                                            <button onClick={()=>onImagePressed(product)}>
+                                            <button onClick={() => onImagePressed(product)}>
                                                 <Image className="w-fit h-fit m-auto rounded-md p-1" objectFit="cover" width={100} height={100} src={product.productImageLink} alt="Product image" />
                                             </button>
                                         </td>
@@ -161,6 +169,7 @@ export default function ProductPage() {
                                             </svg>
                                         </button>
                                     </td>
+                                    {product.status?
                                     <td className="text-center border">
                                         <button onClick={() => onDeleteIconPressed(product)} className="hover:text-cancelColor transition-colors">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -168,8 +177,15 @@ export default function ProductPage() {
                                             </svg>
 
                                         </button>
-
                                     </td>
+                                    :
+                                    <td className="text-center border">
+                                    <button onClick={() => onRevertPressed(product)} className="hover:text-acceptColor transition-colors">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
+                                        </svg>
+                                    </button>
+                                    </td>}
                                 </tr>
                             )
                         })}

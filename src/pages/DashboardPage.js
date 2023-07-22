@@ -114,7 +114,7 @@ export default function DashboardPage() {
     }
 
     const pieData = {
-        labels: listBrands.map(brand => { return (brand.name) }),
+        labels: listBrands.filter(item=>item.status==1).map(brand => { if(brand.status ==1 ){return (brand.name)} }),
         datasets: [
             {
                 type: 'pie',
