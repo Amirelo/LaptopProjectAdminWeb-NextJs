@@ -51,7 +51,7 @@ export default function OrderPage() {
             <>
                 <div className="mr-3">
 
-                    <ActionTop onEditPressed={""} onItemPerPageChange={onItemPerPageChange} />
+                    <ActionTop setAddButtonDisplay={false} onItemPerPageChange={onItemPerPageChange} />
 
                     <table className="w-full mt-10">
                         <tr className="">

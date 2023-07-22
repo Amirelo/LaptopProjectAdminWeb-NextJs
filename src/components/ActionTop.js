@@ -1,12 +1,13 @@
 import { useState } from "react"
 
-export default function ActionTop({onEditPressed, onItemPerPageChange}) {
+export default function ActionTop({onEditPressed, onItemPerPageChange, setAddButtonDisplay}) {
 
     return (
-        <div className="flex flex-row items-center justify-between pt-4">
+        <div className={`flex flex-row items-center  pt-4 ${setAddButtonDisplay==false? "justify-end":"justify-between"}`}>
 
-            <button onClick={onEditPressed} className="bg-mainColor px-6 py-3 rounded-md text-white hover:font-bold">Add</button>
-            <div className="flex flex-row">
+            <button onClick={onEditPressed} className={`bg-mainColor px-6 py-3 rounded-md text-white hover:font-bold ${setAddButtonDisplay==false? "hidden":""}`}>Add</button>
+
+            <div className={`flex flex-row`}>
                 <p>Show&nbsp;</p>
                 <select onChange={event=>onItemPerPageChange(event)} defaultValue={5} className="px-4 border">
                     <option value={5}>5</option>

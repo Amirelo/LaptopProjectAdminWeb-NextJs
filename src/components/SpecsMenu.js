@@ -6,9 +6,7 @@ export default function SpecsMenu({ selection,setSelection }) {
 
     const subSelectionPressed = (id) => {
             setSubSelection(id)
-            if(selection != 'nav3'){
-                setSelection('nav3')
-            } 
+            setSelection(id)
     }
 
     useEffect(()=>{
@@ -19,12 +17,12 @@ export default function SpecsMenu({ selection,setSelection }) {
 
     return (
         <div className="flex flex-col  w-max">
-            <NavLink to={"/brands"} onClick={() => subSelectionPressed('sub1')} className={`p-2 mt-2 rounded-md flex flex-row transition-colors duration-300 ${subSelection == 'sub1' ? "bg-mainSubColor" : "hover:bg-mainSubColor"}`}>Brand</NavLink>
-            <NavLink to={"/screens"} onClick={() => subSelectionPressed('sub2')} className={`p-2 mt-2 rounded-md flex flex-row transition-colors duration-300 ${subSelection == 'sub2' ? "bg-mainSubColor" : "hover:bg-mainSubColor"}`}>Screen</NavLink>
-            <NavLink to={"/processors"} onClick={() => subSelectionPressed('sub3')} className={`p-2 mt-2 rounded-md flex flex-row transition-colors duration-300 ${subSelection == 'sub3' ? "bg-mainSubColor" : "hover:bg-mainSubColor"}`}>Processor</NavLink>
-            <NavLink to={"/memories"} onClick={() => subSelectionPressed('sub4')} className={`p-2 mt-2 rounded-md flex flex-row transition-colors duration-300 ${subSelection == 'sub4' ? "bg-mainSubColor" : "hover:bg-mainSubColor"}`}>Memory/RAM</NavLink>
-            <NavLink to={"/storages"} onClick={() => subSelectionPressed('sub5')} className={`p-2 mt-2 rounded-md flex flex-row transition-colors duration-300 ${subSelection == 'sub5' ? "bg-mainSubColor" : "hover:bg-mainSubColor"}`}>Storage</NavLink>
-            <NavLink to={"/opersys"} onClick={() => subSelectionPressed('sub6')} className={`p-2 mt-2 rounded-md flex flex-row transition-colors duration-300 ${subSelection == 'sub6' ? "bg-mainSubColor" : "hover:bg-mainSubColor"}`}>OS</NavLink>
+            <NavLink to={"/brands"} onClick={() => subSelectionPressed('Brands')} className={`px-12 py-2 mt-2 rounded-md flex flex-row transition-colors duration-200 ease-out ${subSelection == 'Brands' ? "bg-mainSubColor" : "hover:bg-mainSubColor"}`}>Brand</NavLink>
+            <NavLink to={"/screens"} onClick={() => subSelectionPressed('Screens')} className={`px-12 py-2 mt-2 rounded-md flex flex-row transition-colors duration-200 ease-out ${subSelection == 'Screens' ? "bg-mainSubColor" : "hover:bg-mainSubColor"}`}>Screen</NavLink>
+            <NavLink to={"/processors"} onClick={() => subSelectionPressed('Processors')} className={`px-12 py-2 mt-2 rounded-md flex flex-row transition-colors duration-200 ease-out ${subSelection == 'Processors' ? "bg-mainSubColor" : "hover:bg-mainSubColor"}`}>Processor</NavLink>
+            <NavLink to={"/memories"} onClick={() => subSelectionPressed('RAM')} className={`px-12 py-2 mt-2 rounded-md flex flex-row transition-colors duration-200 ease-out ${subSelection == 'RAM' ? "bg-mainSubColor" : "hover:bg-mainSubColor"}`}>Memory/RAM</NavLink>
+            <NavLink to={"/storages"} onClick={() => subSelectionPressed('Storages')} className={`px-12 py-2 mt-2 rounded-md flex flex-row transition-colors duration-200 ease-out ${subSelection == 'Storages' ? "bg-mainSubColor" : "hover:bg-mainSubColor"}`}>Storage</NavLink>
+            <NavLink to={"/opersys"} onClick={() => subSelectionPressed('OS')} className={`px-12 py-2 mt-2 rounded-md flex flex-row transition-colors duration-200 ease-out ${subSelection == 'OS' ? "bg-mainSubColor" : "hover:bg-mainSubColor"}`}>OS</NavLink>
         </div>
     )
 }

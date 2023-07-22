@@ -136,7 +136,7 @@ export default function DashboardPage() {
         isLoading == false ?
             <>
                 {/* Analytics */}
-                <div className='mt-16'>
+                <div className='mt-8'>
                     <p className='font-bold'>Analytics</p>
                     {/* Analytic tab */}
                     <div className='flex flex-row justify-between pr-4'>

@@ -217,7 +217,7 @@ export const updateMemory = async (memoryID, currentRAM, type, speed, maxSlots, 
         speed: speed,
         maxSlots: maxSlots,
         availableSlots: availableSlots,
-        maxRAM: maxRAM,
+        maxRam: maxRAM,
         status: status
     }
     console.log(data);
@@ -232,7 +232,7 @@ export const insertMemory = async (currentRAM, type, speed, maxSlots, availableS
         speed: speed,
         maxSlots: maxSlots,
         availableSlots: availableSlots,
-        maxRAM: maxRAM
+        maxRam: maxRAM
     }
     console.log(data);
     const res = await axiosInstance.post('/memory/insert-memory-info.php', data);
@@ -244,19 +244,7 @@ export const getAllStorages = async () => {
     return res.data;
 }
 
-export const updateStorage = async(type,maxSlots,availableSlots,currentStorage) => {
-    const data = {
-        type: type,
-        maxSlots: maxSlots,
-        availableSlots: availableSlots,
-        currentStorage: currentStorage
-    }
-    console.log(data);
-    const res = await axiosInstance.post('/storage/update-storage-info.php', data);
-    return res.data;
-}
-
-export const insertStorage = async(storageID, type,maxSlots,availableSlots,currentStorage, status) => {
+export const updateStorage = async(storageID,type,maxSlots,availableSlots,currentStorage, status) => {
     const data = {
         storageID:storageID,
         type: type,
@@ -266,12 +254,48 @@ export const insertStorage = async(storageID, type,maxSlots,availableSlots,curre
         status:status
     }
     console.log(data);
+    const res = await axiosInstance.post('/storage/update-storage-info.php', data);
+    return res.data;
+}
+
+export const insertStorage = async(type,maxSlots,availableSlots,currentStorage) => {
+    const data = {
+        type: type,
+        maxSlots: maxSlots,
+        availableSlots: availableSlots,
+        currentStorage: currentStorage
+    }
+    console.log(data);
     const res = await axiosInstance.post('/storage/insert-storage-info.php', data);
     return res.data;
 }
 
 export const getAllOperSys = async () => {
     const res = await axiosInstance.get('/operatingSystem/get-all-operating-systems.php');
+    return res.data;
+}
+
+export const updateOperSys = async (operatingSystemID,OS,version,type,status) => {
+    const data = {
+        operatingSystemID:operatingSystemID,
+        OS:OS,
+        version: version,
+        type: type,
+        status:status
+    }
+    console.log(data);
+    const res = await axiosInstance.post('/operatingSystem/update-operating-system-info.php', data);
+    return res.data;
+}
+
+export const insertOperSys = async (OS,version,type) => {
+    const data = {
+        OS:OS,
+        version: version,
+        type: type
+    }
+    console.log(data);
+    const res = await axiosInstance.post('/operatingSystem/insert-operating-system-info.php', data);
     return res.data;
 }
 

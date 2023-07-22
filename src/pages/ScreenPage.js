@@ -16,6 +16,7 @@ export default function ScreenPage() {
     const [currentPage, setCurrentPage] = useState(1);
     const [itemPerPage, setItemPerPage] = useState(5);
     const [pageCount, setPageCount] = useState(0);
+    
     const [showEditTab, setShowEditTab] = useState(false);
     const [showDeleteTab, setShowDeleteTab] = useState(false);
     const [currentItem, setCurrentItem] = useState({});

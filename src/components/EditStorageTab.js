@@ -1,4 +1,4 @@
-import { getAllBrands, getAllMemories, getAllOperSys, getAllProcessors, getAllScreens, getAllStorages, insertBrand, insertProdct, insertScreen, updateBrandByID, updateProduct, updateScreen, updateStorage } from "@/services/AppService";
+import { getAllBrands, getAllMemories, getAllOperSys, getAllProcessors, getAllScreens, getAllStorages, insertBrand, insertProdct, insertScreen, insertStorage, updateBrandByID, updateProduct, updateScreen, updateStorage } from "@/services/AppService";
 import { dataCheck } from "@/utils/helper";
 import { memo, useEffect, useState } from "react"
 
@@ -34,7 +34,7 @@ export default function EditStorageTab({ onBackgroundPressed, onDeletePress, ite
 
                 <div className="flex flex-row items-center justify-center mx-4 mt-6">
                     <p className="w-1/4 mr-2">Current Storage</p>
-                    <input className="bg-mainSubColor ps-2 flex-1 py-2 border rounded-md" placeholder="Current Storage" onChange={event => setItemCurrentStorage(event.target.value)} value={currentStorage} />
+                    <input className="bg-mainSubColor ps-2 flex-1 py-2 border rounded-md" placeholder="Current Storage" onChange={event => setItemCurrentStorage(event.target.value)} value={itemCurrentStorage} />
                 </div>
 
                 <div className="flex flex-row items-center justify-center mx-4 mt-6">
