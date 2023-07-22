@@ -50,13 +50,7 @@ export default function OrderPage() {
             <>
                 <div className="mr-3">
 
-
-                    <div className="flex flex-row items-center justify-between pt-4">
-
-                        <button onClick={() => onEditIconPressed()} className="bg-mainColor px-6 py-3 rounded-md text-white hover:font-bold">Add</button>
-                        <ActionTop onEditPressed={""} onItemPerPageChange={onItemPerPageChange}/>
-
-                    </div>
+                    <ActionTop onEditPressed={""} onItemPerPageChange={onItemPerPageChange} />
 
                     <table className="w-full mt-10">
                         <tr className="">
