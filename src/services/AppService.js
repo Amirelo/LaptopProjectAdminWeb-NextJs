@@ -47,7 +47,7 @@ export const updateProduct = async (
         length: length,
         width: width,
         height: height,
-        weight:weight,
+        weight: weight,
         status: status,
         brandID: brandID,
         screenID: screenID,
@@ -61,55 +61,55 @@ export const updateProduct = async (
     return res.data;
 }
 
-export const insertProdct = async(
-    productName, 
-    productPrice, 
-    productQuantity, 
-    releasedDate, 
-    totalRating, 
-    modelCode, 
+export const insertProdct = async (
+    productName,
+    productPrice,
+    productQuantity,
+    releasedDate,
+    totalRating,
+    modelCode,
     onSale,
-    currentPrice, 
-    manufacturer, 
-    warranty, 
-    sold, 
+    currentPrice,
+    manufacturer,
+    warranty,
+    sold,
     length,
-    width, 
-    height, 
-    weight, 
-    status, 
+    width,
+    height,
+    weight,
+    status,
     brandID,
     screenID,
     operatingSystemID,
     processorID,
     memoryID,
     storageID) => {
-        const data = {
-            productName:productName,
-            productPrice:productPrice,
-            productQuantity:productQuantity,
-            releasedDate:releasedDate,
-            totalRating:totalRating,
-            modelCode:modelCode,
-            onSale:onSale,
-            currentPrice:currentPrice,
-            manufacturer:manufacturer,
-            warranty:warranty,
-            sold:sold,
-            length:length,
-            width:width,
-            height:height,
-            weight:weight,
-            status:status,
-            brandID:brandID,
-            screenID:screenID,
-            operatingSystemID:operatingSystemID,
-            processorID:processorID,
-            memoryID:memoryID,
-            storageID:storageID
-        }
-        const res = await axiosInstance.post('/product/insert-product-info.php',data);
-        return res.data;
+    const data = {
+        productName: productName,
+        productPrice: productPrice,
+        productQuantity: productQuantity,
+        releasedDate: releasedDate,
+        totalRating: totalRating,
+        modelCode: modelCode,
+        onSale: onSale,
+        currentPrice: currentPrice,
+        manufacturer: manufacturer,
+        warranty: warranty,
+        sold: sold,
+        length: length,
+        width: width,
+        height: height,
+        weight: weight,
+        status: status,
+        brandID: brandID,
+        screenID: screenID,
+        operatingSystemID: operatingSystemID,
+        processorID: processorID,
+        memoryID: memoryID,
+        storageID: storageID
+    }
+    const res = await axiosInstance.post('/product/insert-product-info.php', data);
+    return res.data;
 }
 
 export const getAllUsers = async () => {
@@ -124,6 +124,24 @@ export const getAllUserOrders = async () => {
 
 export const getAllBrands = async () => {
     const res = await axiosInstance.get('/brand/get-all-brands.php');
+    return res.data;
+}
+
+export const updateBrandByID = async (brandID, brandName, status) => {
+    const data = {
+        brandID: brandID,
+        brandName: brandName,
+        status: status
+    }
+    const res = await axiosInstance.post('/brand/update-brand-by-id.php',data);
+    return res.data;
+}
+
+export const insertBrand = async(brandName) => {
+    const data = {
+        brandName:brandName
+    }
+    const res = await axiosInstance.post('/brand/insert-brand.php',data);
     return res.data;
 }
 
@@ -163,42 +181,42 @@ export const updateProductStatus = async (productID, status) => {
     return res.data;
 }
 
-export const getProductImagesByProdID = async(productID) => {
+export const getProductImagesByProdID = async (productID) => {
     const data = {
-        productID:productID
+        productID: productID
     }
-    const res = await axiosInstance.post('/productImage/get-product-images-by-product-id.php',data);
+    const res = await axiosInstance.post('/productImage/get-product-images-by-product-id.php', data);
     return res.data;
 }
 
-export const insertProductImage = async(imageLink,status,productID) =>{
+export const insertProductImage = async (imageLink, status, productID) => {
     const data = {
-        productImageLink : imageLink,
-        status : status,
-        productID:productID
+        productImageLink: imageLink,
+        status: status,
+        productID: productID
     }
-    const res = await axiosInstance.post('/productImage/insert-product-image-info.php',data);
+    const res = await axiosInstance.post('/productImage/insert-product-image-info.php', data);
     return res.data;
 }
 
-export const uploadImageToImgur = async(url) => {
+export const uploadImageToImgur = async (url) => {
     const imgurAxios = axios.create({
-        baseUrl:"https://api.imgur.com/3/image/"
+        baseUrl: "https://api.imgur.com/3/image/"
     })
 
     const config = {
-        headers:{
+        headers: {
             Authorization: "Client-ID 61bda01995348f5"
         }
     }
 
 
-    const data= {
-        image:url.name
+    const data = {
+        image: url.name
     }
-    console.log("data:",data)
-    
-    const res= await imgurAxios.post('/',data,config);
+    console.log("data:", data)
+
+    const res = await imgurAxios.post('/', data, config);
     return res;
 
 }

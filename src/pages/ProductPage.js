@@ -69,14 +69,12 @@ export default function ProductPage() {
 
 
     const initData = async () => {
-        setIsLoading(true)
         const prodRes = await getAllProduct();
         setListProducts(prodRes.data);
 
         setPageCount(Math.ceil(prodRes.data.length / itemPerPage))
         console.log("Count:", Math.ceil(prodRes.data.length / itemPerPage));
 
-        setIsLoading(false);
     }
 
     useEffect(() => {

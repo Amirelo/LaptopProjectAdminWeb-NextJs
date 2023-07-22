@@ -3,6 +3,7 @@
 import ActionTop from "@/components/ActionTop";
 import PaginationTab from "@/components/PaginationTab";
 import { getAllUserOrders } from "@/services/AppService";
+import { priceFormat } from "@/utils/helper";
 import { useEffect, useState } from "react"
 
 export default function OrderPage() {
@@ -67,7 +68,7 @@ export default function OrderPage() {
                             return (
                                 <tr className="even:bg-sky-50 " key={userOrder.userOrderID}>
                                     <td className="text-center border py-3">{userOrder.userOrderID}</td>
-                                    <td className="text-center border">{userOrder.totalPrice}</td>
+                                    <td className="text-center border">{priceFormat(userOrder.totalPrice)}</td>
                                     <td className="text-center border">{userOrder.note}</td>
                                     <td className="text-center border">{statusNumToText[userOrder.status]}</td>
                                     <td className="text-center border">{userOrder.receiver}</td>
