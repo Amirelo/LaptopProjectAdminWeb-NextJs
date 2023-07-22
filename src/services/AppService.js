@@ -133,15 +133,15 @@ export const updateBrandByID = async (brandID, brandName, status) => {
         brandName: brandName,
         status: status
     }
-    const res = await axiosInstance.post('/brand/update-brand-by-id.php',data);
+    const res = await axiosInstance.post('/brand/update-brand-by-id.php', data);
     return res.data;
 }
 
-export const insertBrand = async(brandName) => {
+export const insertBrand = async (brandName) => {
     const data = {
-        brandName:brandName
+        brandName: brandName
     }
-    const res = await axiosInstance.post('/brand/insert-brand.php',data);
+    const res = await axiosInstance.post('/brand/insert-brand.php', data);
     return res.data;
 }
 
@@ -150,9 +150,56 @@ export const getAllScreens = async () => {
     return res.data;
 }
 
+export const updateScreen = async (screenID, resolution, screenSize, status) => {
+    const data = {
+        screenID: screenID,
+        resolution: resolution,
+        screenSize: screenSize,
+        status: status
+    }
+    const res = await axiosInstance.post('/screen/update-screen-info.php', data);
+    return res.data;
+}
+
+export const insertScreen = async (resolution, screenSize) => {
+    const data = {
+        resolution: resolution,
+        screenSize: screenSize,
+    }
+    const res = await axiosInstance.post('/screen/insert-screen-info.php', data);
+    return res.data;
+}
+
 
 export const getAllProcessors = async () => {
     const res = await axiosInstance.get('/processor/get-all-processors.php');
+    return res.data;
+}
+
+export const updateProcessor = async (processorID,name, CPU_Speed, cores, logicalProcessors, cacheMemory,status) => {
+    const data = {
+        processorID:processorID,
+        name: name,
+        CPU_Speed: CPU_Speed,
+        cores: cores,
+        logicalProcessors: logicalProcessors,
+        cacheMemory: cacheMemory,
+        status:status
+    }
+    const res = await axiosInstance.post('/processor/update-processor-info.php', data);
+    return res.data;
+}
+
+export const insertProcessor = async (name, CPU_Speed, cores, logicalProcessors, cacheMemory) => {
+    const data = {
+        name: name,
+        CPU_Speed: CPU_Speed,
+        cores: cores,
+        logicalProcessors: logicalProcessors,
+        cacheMemory: cacheMemory
+    }
+    console.log(data);
+    const res = await axiosInstance.post('/processor/insert-processor-info.php', data);
     return res.data;
 }
 

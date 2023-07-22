@@ -20,11 +20,13 @@ export default function BrandPage() {
     const [showDeleteTab, setShowDeleteTab] = useState(false);
     const [currentItem, setCurrentItem] = useState({});
     const [dataChange, setDataChange] = useState(true);
+    const [sortType, setSortType] = useState();
 
     const onDeleteIconPressed = (item) => {
         setCurrentItem(item)
         setShowDeleteTab(true)
     }
+
 
     const onRevertPressed = async (item) => {
         const deletePress = await updateBrandByID(item.brandID, item.name, 1);
@@ -69,9 +71,24 @@ export default function BrandPage() {
 
     }
 
+    const dataSort = () => {
+        let currentSort;
+        switch (sortType) {
+            case "NAME":
+                currentSort = listBrands.sort((a, b) => a.name.localeCompare(b.name))
+                break;
+            default:
+                currentSort = listBrands.sort((a,b) => a.brandID - b.brandID)
+        }
+        console.log("sortype:", sortType)
+        console.log("Current sort", currentSort)
+        return currentSort.sort((a, b) => b.status - a.status)
+    }
+
     useEffect(() => {
         initData();
     }, [dataChange])
+
 
 
     return (
@@ -92,12 +109,20 @@ export default function BrandPage() {
 
                     <table className="w-full mt-10">
                         <tr className="">
-                            <th className="border">#</th>
-                            <th className="border">Brand Name</th>
+                            <th className="border">
+                            <button className="w-full" onClick={() => setSortType(null)}>
+                                    #
+                                </button>
+                            </th>
+                            <th className="border">
+                                <button className="w-full" onClick={() => setSortType("NAME")}>
+                                    Brand Name
+                                </button>
+                            </th>
                             <th className="border" colSpan={2}>Action</th>
                         </tr>
 
-                        {listBrands.sort((a, b) => b.status - a.status).slice((currentPage - 1) * itemPerPage, itemPerPage * currentPage).map(brand => {
+                        {dataSort().slice((currentPage - 1) * itemPerPage, itemPerPage * currentPage).map(brand => {
                             return (
                                 <tr className={brand.status == 0 ? "bg-slate-500/25" : "even:bg-sky-50"} key={brand.brandID}>
                                     <td className="text-center border">{brand.brandID}</td>

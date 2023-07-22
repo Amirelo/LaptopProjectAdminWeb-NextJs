@@ -95,7 +95,7 @@ export default function NavigationBar() {
 
       </nav>
 
-      <div className='ms-72 bg-white pt-8 ps-4 '>
+      <div className=' border-b ms-72 bg-white py-4 ps-4 '>
         {/* Header */}
         <div className='flex flex-row items-center justify-around'>
           <p className=" text-xl font-bold">Dashboard</p>
