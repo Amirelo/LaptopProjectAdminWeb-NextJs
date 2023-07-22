@@ -176,15 +176,15 @@ export const getAllProcessors = async () => {
     return res.data;
 }
 
-export const updateProcessor = async (processorID,name, CPU_Speed, cores, logicalProcessors, cacheMemory,status) => {
+export const updateProcessor = async (processorID, name, CPU_Speed, cores, logicalProcessors, cacheMemory, status) => {
     const data = {
-        processorID:processorID,
+        processorID: processorID,
         name: name,
         CPU_Speed: CPU_Speed,
         cores: cores,
         logicalProcessors: logicalProcessors,
         cacheMemory: cacheMemory,
-        status:status
+        status: status
     }
     const res = await axiosInstance.post('/processor/update-processor-info.php', data);
     return res.data;
@@ -209,8 +209,64 @@ export const getAllMemories = async () => {
     return res.data;
 }
 
+export const updateMemory = async (memoryID, currentRAM, type, speed, maxSlots, availableSlots, maxRAM, status) => {
+    const data = {
+        memoryID: memoryID,
+        currentRAM: currentRAM,
+        type: type,
+        speed: speed,
+        maxSlots: maxSlots,
+        availableSlots: availableSlots,
+        maxRAM: maxRAM,
+        status: status
+    }
+    console.log(data);
+    const res = await axiosInstance.post('/memory/update-memory-info.php', data);
+    return res.data;
+}
+
+export const insertMemory = async (currentRAM, type, speed, maxSlots, availableSlots, maxRAM) => {
+    const data = {
+        currentRAM: currentRAM,
+        type: type,
+        speed: speed,
+        maxSlots: maxSlots,
+        availableSlots: availableSlots,
+        maxRAM: maxRAM
+    }
+    console.log(data);
+    const res = await axiosInstance.post('/memory/insert-memory-info.php', data);
+    return res.data;
+}
+
 export const getAllStorages = async () => {
     const res = await axiosInstance.get('/storage/get-all-storages.php');
+    return res.data;
+}
+
+export const updateStorage = async(type,maxSlots,availableSlots,currentStorage) => {
+    const data = {
+        type: type,
+        maxSlots: maxSlots,
+        availableSlots: availableSlots,
+        currentStorage: currentStorage
+    }
+    console.log(data);
+    const res = await axiosInstance.post('/storage/update-storage-info.php', data);
+    return res.data;
+}
+
+export const insertStorage = async(storageID, type,maxSlots,availableSlots,currentStorage, status) => {
+    const data = {
+        storageID:storageID,
+        type: type,
+        maxSlots: maxSlots,
+        availableSlots: availableSlots,
+        currentStorage: currentStorage,
+        status:status
+    }
+    console.log(data);
+    const res = await axiosInstance.post('/storage/insert-storage-info.php', data);
     return res.data;
 }
 
