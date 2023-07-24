@@ -1,16 +1,20 @@
 'use-client'
 
 import { getAllOperSys, updateOperSys } from "@/services/AppService";
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import Image from "next/image";
 import ActionTop from "@/components/ActionTop";
 import PaginationTab from "@/components/PaginationTab";
 import DeleteMessage from "@/components/DeleteMessage";
 import EditOSTab from "@/components/EditOSTab";
+import { AuthContext } from "@/services/AuthContext";
 
 
 export default function OSPage() {
+    const {searchText} = useContext(AuthContext);
+
     const [listOS, setListOS] = useState([]);
+    const [listSort,setListSort] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
     const [currentPage, setCurrentPage] = useState(1);
@@ -64,20 +68,27 @@ export default function OSPage() {
     }
 
     const dataSort = () => {
-        let currentSort;
-        switch (sortType) {
-            case "NAME":
-                currentSort = listOS.sort((a, b) => a.name.localeCompare(b.name))
-                break;
-            default:
-                currentSort = listOS.sort((a, b) => a.brandID - b.brandID)
+        let myList = [...listOS]
+        if (searchText != null) {
+            myList = myList.filter(item => ((item.version+" "+item.type).toLowerCase().includes(searchText.toLowerCase())));
         }
-        return currentSort.sort((a, b) => b.status - a.status)
+
+        switch (sortType) {
+            default:
+                myList.sort((a, b) => a.operatingSystemID - b.operatingSystemID)
+        }
+        myList.sort((a, b) => b.status - a.status)
+        console.log(myList)
+        setPageCount(Math.ceil(myList.length / itemPerPage))
+        console.log("Count:", Math.ceil(myList.length / itemPerPage));
+
+        return setListSort(myList)
     }
 
     const initData = async () => {
         const osRes = await getAllOperSys();
         setListOS(osRes.data);
+        setListSort(osRes.data);
         console.log("Operating System", osRes.data)
 
         setPageCount(Math.ceil(osRes.data.length / itemPerPage))
@@ -95,6 +106,10 @@ export default function OSPage() {
     useEffect(() => {
         initData();
     }, [dataChange])
+
+    useEffect(() => {
+        dataSort();
+    }, [searchText])
 
     return (
         isLoading == false ?
@@ -118,11 +133,11 @@ export default function OSPage() {
                             <th className="border" colSpan={2}>Action</th>
                         </tr>
 
-                        {dataSort().slice((currentPage - 1) * itemPerPage, itemPerPage * currentPage).map(operSys => {
+                        {listSort.slice((currentPage - 1) * itemPerPage, itemPerPage * currentPage).map(operSys => {
                             return (
                                 <tr className={operSys.status == 0 ? "bg-slate-500/25" : "even:bg-sky-50"} key={operSys.operatingSystemID}>
                                     <td className="text-center border">{operSys.operatingSystemID}</td>
-                                    <td className=" border">{operSys.version + operSys.type}</td>
+                                    <td className=" border">{operSys.version + " " + operSys.type }</td>
                                     
                                     <td className="text-center border">
                                         <button onClick={() => onEditIconPressed(operSys)} className="hover:text-reviewColor transition-colors">

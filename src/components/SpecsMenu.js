@@ -25,7 +25,7 @@ export default function SpecsMenu({ selection,setSelection }) {
             <NavLink to={"/processors"} onClick={() => [subSelectionPressed('Processors'),setSearchText("")]} className={`px-12 py-2 mt-2 rounded-md flex flex-row transition-colors duration-200 ease-out ${subSelection == 'Processors' ? "bg-mainSubColor" : "hover:bg-mainSubColor"}`}>Processor</NavLink>
             <NavLink to={"/memories"} onClick={() => [subSelectionPressed('RAM'),setSearchText("")]} className={`px-12 py-2 mt-2 rounded-md flex flex-row transition-colors duration-200 ease-out ${subSelection == 'RAM' ? "bg-mainSubColor" : "hover:bg-mainSubColor"}`}>Memory/RAM</NavLink>
             <NavLink to={"/storages"} onClick={() => [subSelectionPressed('Storages'),setSearchText("")]} className={`px-12 py-2 mt-2 rounded-md flex flex-row transition-colors duration-200 ease-out ${subSelection == 'Storages' ? "bg-mainSubColor" : "hover:bg-mainSubColor"}`}>Storage</NavLink>
-            <NavLink to={"/opersys"} onClick={() => s[ubSelectionPressed('OS'),setSearchText("")]} className={`px-12 py-2 mt-2 rounded-md flex flex-row transition-colors duration-200 ease-out ${subSelection == 'OS' ? "bg-mainSubColor" : "hover:bg-mainSubColor"}`}>OS</NavLink>
+            <NavLink to={"/opersys"} onClick={() => [subSelectionPressed('OS'),setSearchText("")]} className={`px-12 py-2 mt-2 rounded-md flex flex-row transition-colors duration-200 ease-out ${subSelection == 'OS' ? "bg-mainSubColor" : "hover:bg-mainSubColor"}`}>OS</NavLink>
         </div>
     )
 }
