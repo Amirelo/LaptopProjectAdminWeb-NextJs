@@ -94,7 +94,7 @@ export default function ProductPage() {
     const dataSort = () => {
         let myList = [...listProducts]
         if (searchText != null) {
-            myList = myList.filter(item => (item.productName.toLowerCase().includes(searchText)));
+            myList = myList.filter(item => (item.productName.toLowerCase().includes(searchText.toLowerCase())));
         }
 
         switch (sortType) {

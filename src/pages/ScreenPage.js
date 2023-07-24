@@ -72,7 +72,7 @@ export default function ScreenPage() {
     const dataSort = () => {
         let myList = [...listScreens]
         if (searchText != null) {
-            myList = myList.filter(item => (item.resolution.toLowerCase().includes(searchText)));
+            myList = myList.filter(item => (item.resolution.toLowerCase().includes(searchText.toLowerCase())));
         }
 
         switch (sortType) {

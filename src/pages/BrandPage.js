@@ -78,7 +78,7 @@ export default function BrandPage() {
     const dataSort = () => {
         let myList = [...listBrands]
         if(searchText!= null){
-            myList = myList.filter(item => (item.name.toLowerCase().includes(searchText)) );
+            myList = myList.filter(item => (item.name.toLowerCase().includes(searchText.toLowerCase())) );
         }
         
         switch (sortType) {

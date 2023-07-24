@@ -1,16 +1,20 @@
 'use-client'
 
 import { getAllMemories, updateMemory } from "@/services/AppService";
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import Image from "next/image";
 import ActionTop from "@/components/ActionTop";
 import PaginationTab from "@/components/PaginationTab";
 import DeleteMessage from "@/components/DeleteMessage";
 import EditMemoryTab from "@/components/EditMemoryTab";
+import { AuthContext } from "@/services/AuthContext";
 
 
 export default function MemoryPage() {
+    const {searchText} = useContext(AuthContext);
+
     const [listMemories, setListMemories] = useState([]);
+    const [listSort, setListSort] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
     const [currentPage, setCurrentPage] = useState(1);
@@ -63,20 +67,27 @@ export default function MemoryPage() {
     }
 
     const dataSort = () => {
-        let currentSort;
-        switch (sortType) {
-            case "NAME":
-                currentSort = listMemories.sort((a, b) => a.name.localeCompare(b.name))
-                break;
-            default:
-                currentSort = listMemories.sort((a, b) => a.brandID - b.brandID)
+        let myList = [...listMemories]
+        if (searchText != null) {
+            myList = myList.filter(item => ((item.currentRAM + " " + item.type + " " + item.speed).toLowerCase().includes(searchText.toLowerCase())));
         }
-        return currentSort.sort((a, b) => b.status - a.status)
+
+        switch (sortType) {
+            default:
+                myList.sort((a, b) => a.memoryID - b.memoryID)
+        }
+        myList.sort((a, b) => b.status - a.status)
+        console.log(myList)
+        setPageCount(Math.ceil(myList.length / itemPerPage))
+        console.log("Count:", Math.ceil(myList.length / itemPerPage));
+
+        return setListSort(myList)
     }
 
     const initData = async () => {
         const memoryRes = await getAllMemories();
         setListMemories(memoryRes.data);
+        setListSort(memoryRes.data);
         console.log("Memory/RAM", memoryRes.data)
 
         setPageCount(Math.ceil(memoryRes.data.length / itemPerPage))
@@ -88,6 +99,12 @@ export default function MemoryPage() {
         initData();
     }, [dataChange])
 
+
+useEffect(() => {
+        dataSort();
+    }, [searchText])
+
+    
     return (
         isLoading == false ?
             <>
@@ -113,7 +130,7 @@ export default function MemoryPage() {
                             <th className="border" colSpan={2}>Action</th>
                         </tr>
 
-                        {dataSort().slice((currentPage - 1) * itemPerPage, itemPerPage * currentPage).map(memory => {
+                        {listSort.slice((currentPage - 1) * itemPerPage, itemPerPage * currentPage).map(memory => {
                             return (
                                 <tr className={memory.status == 0 ? "bg-slate-500/25" : "even:bg-sky-50"} key={memory.memoryID}>
                                     <td className="text-center border">{memory.memoryID}</td>

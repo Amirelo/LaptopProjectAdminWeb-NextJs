@@ -64,7 +64,7 @@ export default function ProcessorPage() {
     const dataSort = () => {
         let myList = [...listProcessors]
         if (searchText != null) {
-            myList = myList.filter(item => (item.name.toLowerCase().includes(searchText)));
+            myList = myList.filter(item => (item.name.toLowerCase().includes(searchText.toLowerCase())));
         }
 
         switch (sortType) {
