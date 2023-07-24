@@ -139,17 +139,17 @@ export default function ProductPage() {
 
                         {listProducts.sort((a, b) => { return b.status - a.status }).slice((currentPage - 1) * itemPerPage, itemPerPage * currentPage).map(product => {
                             return (
-                                <tr className={product.status == 0 ? "bg-slate-500/25" : "even:bg-sky-50"} key={product.productID}>
+                                <tr className={`h-36 ${product.status == 0 ? "bg-slate-500/25" : "even:bg-sky-50"}`} key={product.productID}>
                                     <td className="text-center border">{product.productID}</td>
 
                                     {product.productImageLink ?
-                                        <td className="text-center border block py-3">
+                                        <td className="text-center border w-2/12">
                                             <button onClick={() => onImagePressed(product)}>
                                                 <Image className="w-fit h-fit m-auto rounded-md p-1" objectFit="cover" width={100} height={100} src={product.productImageLink} alt="Product image" />
                                             </button>
                                         </td>
                                         :
-                                        <td className="text-center border block py-2">
+                                        <td className="text-center border block w-2/12">
                                             <button onClick={setShowEditImageTab} className="border hover:text-acceptColor hover:font-bold">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />

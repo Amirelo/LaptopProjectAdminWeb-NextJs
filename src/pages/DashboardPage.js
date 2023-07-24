@@ -9,8 +9,9 @@ import UserOrderList from '@/components/UserOrderList';
 import { ArcElement, BarController, BarElement, CategoryScale, Chart, Legend, LinearScale, Title, Tooltip } from 'chart.js';
 import { Bar, Pie } from 'react-chartjs-2';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import EditOrderTab from '@/components/EditOrderTab';
 
-Chart.register(LinearScale, CategoryScale, BarElement, ArcElement, Title, Legend,ChartDataLabels,Tooltip)
+Chart.register(LinearScale, CategoryScale, BarElement, ArcElement, Title, Legend, ChartDataLabels, Tooltip)
 
 export default function DashboardPage() {
     const [listProducts, setListProducts] = useState([]);
@@ -19,15 +20,27 @@ export default function DashboardPage() {
     const [isLoading, setIsLoading] = useState(false);
 
     const [totalRevenue, setTotalRevenue] = useState(0);
+    const [todayRevenue, setTodayRevenue] = useState(0);
+    const [todayOrder, setTodayOrder] = useState(0);
 
-    const currentDate = new Date().getMonth();
+    const [currentOrder, setCurrentOrder] = useState({});
+    const [showEditTab, setShowEditTab] = useState(false);
+
+    const [dataChange, setDataChange] = useState(true);
+
+    const currentMonth = new Date().getMonth();
+    const currentDay = new Date().getDate();
+    const currentYear = new Date().getFullYear();
+    const currentDate = currentYear + "-" + currentMonth + "-" + currentDay;
+
+
     const month = ["January", "Febuary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December",]
 
     const checkMonth = (receivedMonth) => {
-        if ((currentDate + receivedMonth) < 12) {
-            return month[currentDate + receivedMonth]
+        if ((currentMonth + receivedMonth) < 12) {
+            return month[currentMonth + receivedMonth]
         } else {
-            return month[currentDate + receivedMonth - 12]
+            return month[currentMonth + receivedMonth - 12]
         }
     }
 
@@ -56,23 +69,25 @@ export default function DashboardPage() {
 
         setTotalRevenue(0);
         userOrderRes.data.map(order => {
+            if (order.pendingDate == currentDate && order.status != 0) {
+                setTodayOrder(prev => prev + 1);
+            }
             if (order.status > 2) {
                 setTotalRevenue(prev => prev + order.totalPrice);
+                if (order.pendingDate == currentDate) {
+                    setTodayRevenue(prev => prev + order.totalPrice);
+                }
             }
         })
-
 
         setIsLoading(false)
     }
 
     const getMonthRevenue = (month) => {
         let monthRevenue = 0;
-        console.log("Month", month)
 
         listUserOrders.map(order => {
-            console.log("date month", order.deliveryDate ? parseInt(order.deliveryDate.slice(5, 7)) : 0)
             if (order.status > 2 && parseInt(order.deliveryDate.slice(5, 7)) == month) {
-                console.log("Found")
                 monthRevenue += order.totalPrice;
             }
         })
@@ -101,25 +116,35 @@ export default function DashboardPage() {
 
     }
 
+    const onEditIconPressed = (item) => {
+        setCurrentOrder(item);
+        setShowEditTab(true);
+    }
+
+    const onFinishedHandlingItem = () => {
+        setCurrentOrder({});
+        setShowEditTab(false);
+        setDataChange(!dataChange);
+    }
 
     const data = {
         labels: [checkMonth(-5), checkMonth(-4), checkMonth(-3), checkMonth(-2), checkMonth(-1), checkMonth(0)],
         datasets: [
             {
                 label: 'Sales',
-                backgroundColor: ['#87bc45', '#b33dc6', '#b3d4ff'],
-                data: [getMonthRevenue(currentDate - 4), getMonthRevenue(currentDate - 3), getMonthRevenue(currentDate - 2), getMonthRevenue(currentDate - 1), getMonthRevenue(currentDate), getMonthRevenue(currentDate + 1)],
+                backgroundColor: ['#95B2E5', '#D3A1E5', '#E6D2AF', '#C5E8CF', '#B5E9AA', '#E8B7D1'],
+                data: [getMonthRevenue(currentMonth - 4), getMonthRevenue(currentMonth - 3), getMonthRevenue(currentMonth - 2), getMonthRevenue(currentMonth - 1), getMonthRevenue(currentMonth), getMonthRevenue(currentMonth + 1)],
             }
         ]
     }
 
     const pieData = {
-        labels: listBrands.filter(item=>item.status==1).map(brand => { if(brand.status ==1 ){return (brand.name)} }),
+        labels: listBrands.filter(item => item.status == 1).map(brand => { if (brand.status == 1) { return (brand.name) } }),
         datasets: [
             {
                 type: 'pie',
                 label: 'Sales',
-                backgroundColor: ['#1B98F2', '#DC0C00', '#252726', '#D1DFDB', '#06E127', '#0BE1B9', '#F76C0A', '#E0A901', '#E0CC8B', '#D900E0'],
+                backgroundColor: ['#1B98F2', '#EB6F6B', '#252726', '#D1DFDB', '#06E127', '#0BE1B9', '#F76C0A', '#E0A901', '#E0CC8B', '#D900E0'],
                 data: listBrands.map(brand => { return (getProductBrandTotalRevenue(brand.brandID)) }),
 
 
@@ -129,7 +154,7 @@ export default function DashboardPage() {
 
     useEffect(() => {
         initData();
-    }, [])
+    }, [dataChange])
 
 
     return (
@@ -137,13 +162,19 @@ export default function DashboardPage() {
             <>
                 {/* Analytics */}
                 <div className='mt-8'>
+
+                    {showEditTab ?
+                        <EditOrderTab item={currentOrder} onBackgroundPressed={() => setShowEditTab(false)} onDeletePress={onFinishedHandlingItem} />
+                        : <></>}
+
+
                     <p className='font-bold'>Analytics</p>
                     {/* Analytic tab */}
                     <div className='flex flex-row justify-between pr-4'>
-                        <AnalyticTab name={"Total revenue"} amount={priceFormat(totalRevenue)} percent={'+ 5%'} />
-                        <AnalyticTab name={"This month revenue"} amount={priceFormat(getMonthRevenue(currentDate + 1))} percent={'+ 1%'} />
-                        <AnalyticTab name={"Total order"} amount={listUserOrders.length + ' orders'} percent={'+ 3%'} />
-                        <AnalyticTab name={"Low stock product"} amount={getLowProducts() + ' products'} percent={'+ 5%'} />
+                        <AnalyticTab name={"Total revenue"} amount={priceFormat(totalRevenue)} percent={todayRevenue != 0 ? '+ ' + (todayRevenue / totalRevenue).toFixed(1) + "%" : "+ 0%"} />
+                        <AnalyticTab name={"This month revenue"} amount={priceFormat(getMonthRevenue(currentMonth + 1))} percent={todayRevenue != 0 ? (todayRevenue / getMonthRevenue(currentMonth + 1)).toFixed(1) + "%" : "+ 0%"} />
+                        <AnalyticTab name={"Total order"} amount={listUserOrders.length + ' orders'} percent={todayOrder != 0 ? todayOrder / listUserOrders.length : "+ 0%"} />
+                        <AnalyticTab name={"Low stock product"} amount={getLowProducts() + ' products'} />
                     </div>
                 </div>
 
@@ -157,12 +188,17 @@ export default function DashboardPage() {
                                     <th>Order date</th>
                                     <th>Status</th>
                                 </tr>
-                                {listUserOrders.sort((a, b) => b.userOrderID - a.userOrderID).slice(0, 6).map(userOrder => {
+                                {listUserOrders.sort((a, b) => b.pendingDate.localeCompare(a.pendingDate)).slice(0, 6).map(userOrder => {
                                     return (
                                         <tr key={userOrder.userOrderID}>
                                             <td className='border text-center '>TSTRN{userOrder.userOrderID}</td>
                                             <td className='border text-center'>{userOrder.pendingDate}</td>
-                                            <td className='text-processColor border text-center hover:font-bold'><button>{statusArr[userOrder.status]}</button></td>
+                                            <td className={`text-processColor border text-center font-medium ${userOrder.status == 1 ? "animate-bounce text-processingColor" : userOrder.status == 0 ? "text-cancelColor" : userOrder.status == 3 ? "text-reviewColor" : userOrder.status == 4 ? "text-acceptColor" : ""}`}>
+                                                {userOrder.status <= 3 ?
+                                                    <button onClick={() => onEditIconPressed(userOrder)} className="hover:font-bold">{statusArr[userOrder.status]}</button>
+                                                    :
+                                                    <p>{statusArr[userOrder.status]}</p>}
+                                            </td>
                                         </tr>
                                     )
                                 }
@@ -196,19 +232,19 @@ export default function DashboardPage() {
                             plugins: {
                                 title: {
                                     display: true,
-                                    text: 'Product Sales By Brand (6 months)'
+                                    text: 'Product Sales By Brand (6 months)',
                                 },
-                                datalabels:{
+                                datalabels: {
                                     formatter: (value, ctx) => {
                                         const datapoints = ctx.chart.data.datasets[0].data
-                                         const total = datapoints.reduce((total, datapoint) => total + datapoint, 0)
+                                        const total = datapoints.reduce((total, datapoint) => total + datapoint, 0)
                                         const percentage = value / total * 100
-                                        if(percentage ==0 ){
+                                        if (percentage == 0) {
                                             return ""
-                                        } else{
-                                        return percentage.toFixed(2) + "%";
+                                        } else {
+                                            return percentage.toFixed(1) + "%";
                                         }
-                                      },
+                                    },
                                 },
                             }
                         }} data={pieData}></Pie>
@@ -221,8 +257,8 @@ export default function DashboardPage() {
                                     <th>Product Name</th>
                                     <th>Total sale</th>
                                 </tr>
-                                {listProducts.sort((a,b)=>b.sold-a.sold).slice(0, 6).map(prod => {
-                                    if (prod.sold>0) {
+                                {listProducts.sort((a, b) => b.sold - a.sold).slice(0, 6).map(prod => {
+                                    if (prod.sold > 0) {
                                         return (
                                             <tr className='even:bg-sky-50' key={prod.productID}>
                                                 <td className='border text-center truncate overflow-hidden'>{prod.productName}</td>

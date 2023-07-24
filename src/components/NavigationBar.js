@@ -58,7 +58,7 @@ export default function NavigationBar() {
 
 
         </button>
-        <div className={showSpecsList? "opacity-0 fixed top-1/3 ease-out pointer-events-none":"opacity-100 ease-linear duration-500"} >
+        <div className={showSpecsList? "opacity-0 h-0 top-1/3 pointer-events-none":"opacity-100 ease-linear duration-500"} >
           <SpecsMenu selection={selection} setSelection={setSelection}/>
           </div>
         <NavLink to={"/orders"} onClick={()=>setSelection('Orders')} className={`duration-1000 ease-in p-4 w-56 mt-1 rounded-md flex flex-row transition-all ${selection == 'Orders'? "bg-mainSubColor":"hover:bg-mainSubColor"}`}>

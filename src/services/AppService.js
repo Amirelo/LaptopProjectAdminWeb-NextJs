@@ -122,6 +122,18 @@ export const getAllUserOrders = async () => {
     return res.data;
 }
 
+export const updateUserOrderStatus = async (userOrderID, userID, status, type) => {
+    const data = {
+        userOrderID: userOrderID,
+        userID: userID,
+        status: status,
+        type: type
+    }
+    console.log(data)
+    const res = await axiosInstance.post('/userOrder/update-user-oder-status.php',data);
+    return res.data;
+}
+
 export const getAllBrands = async () => {
     const res = await axiosInstance.get('/brand/get-all-brands.php');
     return res.data;
@@ -244,21 +256,21 @@ export const getAllStorages = async () => {
     return res.data;
 }
 
-export const updateStorage = async(storageID,type,maxSlots,availableSlots,currentStorage, status) => {
+export const updateStorage = async (storageID, type, maxSlots, availableSlots, currentStorage, status) => {
     const data = {
-        storageID:storageID,
+        storageID: storageID,
         type: type,
         maxSlots: maxSlots,
         availableSlots: availableSlots,
         currentStorage: currentStorage,
-        status:status
+        status: status
     }
     console.log(data);
     const res = await axiosInstance.post('/storage/update-storage-info.php', data);
     return res.data;
 }
 
-export const insertStorage = async(type,maxSlots,availableSlots,currentStorage) => {
+export const insertStorage = async (type, maxSlots, availableSlots, currentStorage) => {
     const data = {
         type: type,
         maxSlots: maxSlots,
@@ -275,22 +287,22 @@ export const getAllOperSys = async () => {
     return res.data;
 }
 
-export const updateOperSys = async (operatingSystemID,OS,version,type,status) => {
+export const updateOperSys = async (operatingSystemID, OS, version, type, status) => {
     const data = {
-        operatingSystemID:operatingSystemID,
-        OS:OS,
+        operatingSystemID: operatingSystemID,
+        OS: OS,
         version: version,
         type: type,
-        status:status
+        status: status
     }
     console.log(data);
     const res = await axiosInstance.post('/operatingSystem/update-operating-system-info.php', data);
     return res.data;
 }
 
-export const insertOperSys = async (OS,version,type) => {
+export const insertOperSys = async (OS, version, type) => {
     const data = {
-        OS:OS,
+        OS: OS,
         version: version,
         type: type
     }
