@@ -1,16 +1,20 @@
 'use-client'
 
 import { getAllProcessors, updateProcessor } from "@/services/AppService";
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import Image from "next/image";
 import ActionTop from "@/components/ActionTop";
 import PaginationTab from "@/components/PaginationTab";
 import DeleteMessage from "@/components/DeleteMessage";
 import EditProcessorTab from "@/components/EditProcessorTab";
+import { AuthContext } from "@/services/AuthContext";
 
 
 export default function ProcessorPage() {
+    const {searchText} = useContext(AuthContext);
+
     const [listProcessors, setListProcessors] = useState([]);
+    const [listSort, setListSort] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
     const [currentPage, setCurrentPage] = useState(1);
@@ -58,21 +62,28 @@ export default function ProcessorPage() {
     }
 
     const dataSort = () => {
-        let currentSort;
-        switch (sortType) {
-            case "NAME":
-                currentSort = listProcessors.sort((a, b) => a.name.localeCompare(b.name))
-                break;
-            default:
-                currentSort = listProcessors.sort((a, b) => a.brandID - b.brandID)
+        let myList = [...listProcessors]
+        if (searchText != null) {
+            myList = myList.filter(item => (item.name.toLowerCase().includes(searchText)));
         }
-        return currentSort.sort((a, b) => b.status - a.status)
+
+        switch (sortType) {
+            default:
+                myList.sort((a, b) => a.processorID - b.processorID)
+        }
+        myList.sort((a, b) => b.status - a.status)
+        console.log(myList)
+        setPageCount(Math.ceil(myList.length / itemPerPage))
+        console.log("Count:", Math.ceil(myList.length / itemPerPage));
+
+        return setListSort(myList)
     }
 
 
     const initData = async () => {
         const prosRes = await getAllProcessors();
         setListProcessors(prosRes.data);
+        setListSort(prosRes.data);
         console.log("Processors", prosRes.data)
 
         setPageCount(Math.ceil(prosRes.data.length / itemPerPage))
@@ -95,6 +106,11 @@ export default function ProcessorPage() {
     useEffect(() => {
         initData();
     }, [dataChange])
+
+    useEffect(() => {
+        dataSort();
+    }, [searchText])
+
 
     return (
         isLoading == false ?
@@ -123,7 +139,7 @@ export default function ProcessorPage() {
                             <th className="border" colSpan={2}>Action</th>
                         </tr>
 
-                        {dataSort().slice((currentPage - 1) * itemPerPage, itemPerPage * currentPage).map(processor => {
+                        {listSort.slice((currentPage - 1) * itemPerPage, itemPerPage * currentPage).map(processor => {
                             return (
                                 <tr className={processor.status == 0 ? "bg-slate-500/25" : "even:bg-sky-50"} key={processor.processorID}>
                                     <td className="text-center border">{processor.processorID}</td>
