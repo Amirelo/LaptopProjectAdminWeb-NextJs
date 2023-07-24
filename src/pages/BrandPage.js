@@ -2,7 +2,6 @@
 
 import { getAllBrands, updateBrandByID } from "@/services/AppService";
 import { useContext, useEffect, useState } from "react"
-import Image from "next/image";
 import PaginationTab from "@/components/PaginationTab";
 import ActionTop from "@/components/ActionTop";
 import EditBrandTab from "@/components/EditBrandTab";
@@ -91,6 +90,9 @@ export default function BrandPage() {
         }
         myList.sort((a, b) => b.status - a.status)
         console.log(myList)
+        setPageCount(Math.ceil(myList.length / itemPerPage))
+        console.log("Count:", Math.ceil(myList.length / itemPerPage));
+
         return setListSort(myList)
     }
 

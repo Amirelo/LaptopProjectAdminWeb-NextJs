@@ -12,7 +12,7 @@ export default function NavigationBar() {
   const [showSpecsList, setShowSpecsList] = useState(false);
   const [selection, setSelection] = useState('Dashboard');
 
-  const {setSearchText} = useContext(AuthContext);
+  const { setSearchText, searchText } = useContext(AuthContext);
 
   const { user, userLogout } = useContext(AuthContext);
 
@@ -30,14 +30,14 @@ export default function NavigationBar() {
           <span className="font-bold">Store </span>
           <span className="text-mainColor font-bold">Manager</span>
         </div>
-        <NavLink to={"/"} onClick={() => setSelection('Dashboard')} className={`p-4 w-56 mt-7 rounded-md flex flex-row transition-colors duration-300 ${selection == 'Dashboard' ? "bg-mainSubColor" : "hover:bg-mainSubColor"}`}>
+        <NavLink to={"/"} onClick={() => [setSelection('Dashboard'), setSearchText("")]} className={`p-4 w-56 mt-7 rounded-md flex flex-row transition-colors duration-300 ${selection == 'Dashboard' ? "bg-mainSubColor" : "hover:bg-mainSubColor"}`}>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="black" class="w-6 h-6">
             <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
           </svg>
           <p className='ms-1'>Dashboard</p>
         </NavLink>
 
-        <Link to={"/products"} onClick={() => setSelection('Products')} className={`p-4 w-56 mt-1 rounded-md flex flex-row transition-colors duration-300 ${selection == 'Products' ? "bg-mainSubColor" : "hover:bg-mainSubColor"}`}>
+        <Link to={"/products"} onClick={() => [setSelection('Products'), setSearchText("")]} className={`p-4 w-56 mt-1 rounded-md flex flex-row transition-colors duration-300 ${selection == 'Products' ? "bg-mainSubColor" : "hover:bg-mainSubColor"}`}>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
             <path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25" />
           </svg>
@@ -99,21 +99,23 @@ export default function NavigationBar() {
 
       </nav>
 
-      <div className=' border-b ms-72 bg-inputBackgroundColor py-4 ps-4 '>
+      <div className=' border-b ms-72 bg-inputBackgroundColor py-4 px-4 '>
         {/* Header */}
-        <div className='flex flex-row items-center justify-between mr-4'>
+        <div className='flex flex-row items-center w-full justify-between mr-4'>
           <p className=" text-xl font-bold">{selection}</p>
-
+          
+          {selection!= "Dashboard"?
           <div className='rounded bg-inputBackgroundColor border-b-inputBorderColor w-80 h-12 flex flex-row items-center'>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" class="w-6 h-6">
               <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
             </svg>
-            <input name="MyInput" onChange={event => setSearchText(event.target.value)} placeholder='Search here' className='w-80 h-12 ps-8 bg-transparent absolute' />
+            <input name="MyInput" value={searchText} onChange={event => setSearchText(event.target.value)} placeholder='Search here' className='w-80 h-12 ps-8 bg-transparent absolute' />
           </div>
+:<></>}
 
-          <div className='w-2/12 h-auto flex flex-row items-center '>
+          <div className=' h-auto flex flex-row items-center '>
             <img className='mr-2 object-cover w-11 h-11 rounded-lg' alt='user image' src={user.imageLink} />
-            <p className='mr-2'>{user.username}</p>
+            <p>{user.username}</p>
           </div>
         </div>
       </div>
