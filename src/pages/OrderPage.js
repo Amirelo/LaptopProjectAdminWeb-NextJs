@@ -4,11 +4,15 @@ import ActionTop from "@/components/ActionTop";
 import EditOrderTab from "@/components/EditOrderTab";
 import PaginationTab from "@/components/PaginationTab";
 import { getAllUserOrders } from "@/services/AppService";
+import { AuthContext } from "@/services/AuthContext";
 import { priceFormat } from "@/utils/helper";
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 
 export default function OrderPage() {
+    const {searchText} = useContext(AuthContext);
+
     const [listUserOrders, setListUserOrders] = useState([]);
+    const [listSort,setListSort] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
     const [currentPage, setCurrentPage] = useState(1);
@@ -19,6 +23,7 @@ export default function OrderPage() {
     const [showEditTab, setShowEditTab] = useState(false);
 
     const [dataChange,setDataChange] = useState(true);
+    const [sortType, setSortType] = useState();
 
     const onEditIconPressed = (item) => {
         setCurrentOrder(item);
@@ -44,9 +49,28 @@ export default function OrderPage() {
         4: "Completed",
     }
 
+    const dataSort = () => {
+        let myList = [...listUserOrders]
+        if (searchText != null) {
+            myList = myList.filter(item => ((item.receiver+" "+item.totalPrice +" " +statusArr[item.status] +" "+item.pendingDate +" "+item.prepareDate+" "+item.deliveryDate +" "+item.arrivedDate).toLowerCase().includes(searchText.toLowerCase())));
+        }
+
+        switch (sortType) {
+            default:
+                myList.sort((a, b) => a.userOrderID - b.userOrderID)
+        }
+        myList.sort((a, b) => b.status - a.status)
+        console.log(myList)
+        setPageCount(Math.ceil(myList.length / itemPerPage))
+        console.log("Count:", Math.ceil(myList.length / itemPerPage));
+
+        return setListSort(myList)
+    }
+
     const initData = async () => {
         const userOrderRes = await getAllUserOrders();
         setListUserOrders(userOrderRes.data);
+        setListSort(userOrderRes.data);
         console.log("User order", userOrderRes.data)
 
         setPageCount(Math.ceil(userOrderRes.data.length / itemPerPage))
@@ -56,6 +80,11 @@ export default function OrderPage() {
     useEffect(() => {
         initData();
     }, [dataChange])
+
+    useEffect(() => {
+        dataSort();
+    }, [searchText])
+
     return (
         isLoading == false ?
             <>
@@ -77,7 +106,7 @@ export default function OrderPage() {
                             <th className="border w-2/12">Status</th>
                         </tr>
 
-                        {listUserOrders.slice((currentPage - 1) * itemPerPage, itemPerPage * currentPage).map(userOrder => {
+                        {listSort.slice((currentPage - 1) * itemPerPage, itemPerPage * currentPage).map(userOrder => {
                             return (
                                 <tr className="even:bg-sky-50 " key={userOrder.userOrderID}>
                                     <td className="text-center border py-3">{userOrder.userOrderID}</td>
