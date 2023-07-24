@@ -1,10 +1,11 @@
 import { getAllBrands, getAllMemories, getAllOperSys, getAllProcessors, getAllScreens, getAllStorages, insertBrand, insertProdct, updateBrandByID, updateProduct } from "@/services/AppService";
 import { dataCheck } from "@/utils/helper";
-import { memo, useEffect, useState } from "react"
+import { memo, useContext, useEffect, useState } from "react"
 
 export default function EditBrandTab({ onBackgroundPressed, onDeletePress, item }) {
     const [listBrands, setListBrands] = useState([]);
     const [itemName, setItemName] = useState(item ?item.name : "");
+
 
 
     const onEditButtonPressed = async () => {

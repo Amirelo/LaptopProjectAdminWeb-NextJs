@@ -12,6 +12,8 @@ export default function NavigationBar() {
   const [showSpecsList, setShowSpecsList] = useState(false);
   const [selection, setSelection] = useState('Dashboard');
 
+  const {setSearchText} = useContext(AuthContext);
+
   const { user, userLogout } = useContext(AuthContext);
 
   const onShowSpecsListPressed = () => {
@@ -106,7 +108,7 @@ export default function NavigationBar() {
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" class="w-6 h-6">
               <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
             </svg>
-            <input name="MyInput" placeholder='Search here' className='w-80 h-12 ps-8 bg-transparent absolute' />
+            <input name="MyInput" onChange={event => setSearchText(event.target.value)} placeholder='Search here' className='w-80 h-12 ps-8 bg-transparent absolute' />
           </div>
 
           <div className='w-2/12 h-auto flex flex-row items-center '>

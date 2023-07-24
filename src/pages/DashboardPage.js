@@ -6,12 +6,13 @@ import { getAllBrands, getAllProduct, getAllUserOrders, getAllUsers } from '@/se
 import { useEffect, useState } from 'react';
 import ProductListItem from '@/components/ProductListItem';
 import UserOrderList from '@/components/UserOrderList';
-import { ArcElement, BarController, BarElement, CategoryScale, Chart, Legend, LinearScale, Title, Tooltip } from 'chart.js';
-import { Bar, Pie } from 'react-chartjs-2';
+import { ArcElement, BarController, BarElement, CategoryScale, Chart, Legend, LineElement, LinearScale, PointElement, Title, Tooltip } from 'chart.js';
+import { Bar, Line, Pie } from 'react-chartjs-2';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import EditOrderTab from '@/components/EditOrderTab';
 
-Chart.register(LinearScale, CategoryScale, BarElement, ArcElement, Title, Legend, ChartDataLabels, Tooltip)
+Chart.register(LinearScale, CategoryScale, BarElement, ArcElement,
+    Title, Legend, ChartDataLabels, Tooltip, PointElement, LineElement)
 
 export default function DashboardPage() {
     const [listProducts, setListProducts] = useState([]);
@@ -95,6 +96,27 @@ export default function DashboardPage() {
         return monthRevenue;
     }
 
+    const getMonthlyOrders = (month, type) => {
+        let total = 0;
+        if (type == null) {
+            listUserOrders.map(order => {
+                if (order.status > 2 && parseInt(order.deliveryDate.slice(5, 7)) == month) {
+                    total++;
+                }
+            })
+        } else {
+            listUserOrders.map(order => {
+                if (order.status == type && parseInt(order.pendingDate.slice(5, 7)) == month) {
+                    total++;
+                }
+            })
+        }
+
+
+
+        return total;
+    }
+
     const getLowProducts = () => {
         let data = [];
         listProducts.map(prod => {
@@ -116,6 +138,18 @@ export default function DashboardPage() {
 
     }
 
+    const getProductBrandRating = (brand) => {
+        let total = 0;
+        let index = 0;
+        listProducts.map(prod => {
+            if (prod.brandID == brand) {
+                total += prod.totalRating;
+                index++;
+            }
+        })
+        return (total/index).toFixed(1);
+    }
+
     const onEditIconPressed = (item) => {
         setCurrentOrder(item);
         setShowEditTab(true);
@@ -131,9 +165,60 @@ export default function DashboardPage() {
         labels: [checkMonth(-5), checkMonth(-4), checkMonth(-3), checkMonth(-2), checkMonth(-1), checkMonth(0)],
         datasets: [
             {
-                label: 'Sales',
+                label: ['Sales'],
                 backgroundColor: ['#95B2E5', '#D3A1E5', '#E6D2AF', '#C5E8CF', '#B5E9AA', '#E8B7D1'],
                 data: [getMonthRevenue(currentMonth - 4), getMonthRevenue(currentMonth - 3), getMonthRevenue(currentMonth - 2), getMonthRevenue(currentMonth - 1), getMonthRevenue(currentMonth), getMonthRevenue(currentMonth + 1)],
+            }
+
+        ]
+    }
+
+    const OrderAmountData = {
+        labels: [checkMonth(-5), checkMonth(-4), checkMonth(-3), checkMonth(-2), checkMonth(-1), checkMonth(0)],
+        datasets: [
+            {
+                stack: 'stack1',
+                type: 'bar',
+                label: 'Total orders',
+                backgroundColor: ['#95B2E5', '#D3A1E5', '#E6D2AF', '#C5E8CF', '#B5E9AA', '#E8B7D1'],
+                data: [getMonthlyOrders(currentMonth - 4), getMonthlyOrders(currentMonth - 3), getMonthlyOrders(currentMonth - 2), getMonthlyOrders(currentMonth - 1), getMonthlyOrders(currentMonth), getMonthlyOrders(currentMonth + 1)]
+            }
+        ]
+    }
+
+    const OrderAmountDetailData = {
+        labels: [checkMonth(-5), checkMonth(-4), checkMonth(-3), checkMonth(-2), checkMonth(-1), checkMonth(0)],
+        datasets: [
+            {
+                label: statusArr[4],
+                stack: 'stack2',
+                backgroundColor: ['#ADDE8E'],
+                data: [getMonthlyOrders(currentMonth - 4, 4), getMonthlyOrders(currentMonth - 3, 4), getMonthlyOrders(currentMonth - 2, 4), getMonthlyOrders(currentMonth - 1, 4), getMonthlyOrders(currentMonth, 4), getMonthlyOrders(currentMonth + 1, 4)]
+            },
+            {
+                label: statusArr[3],
+                stack: 'stack2',
+                backgroundColor: ['#F5F29D'],
+                data: [getMonthlyOrders(currentMonth - 4, 3), getMonthlyOrders(currentMonth - 3, 3), getMonthlyOrders(currentMonth - 2, 3), getMonthlyOrders(currentMonth - 1, 3), getMonthlyOrders(currentMonth, 3), getMonthlyOrders(currentMonth + 1, 3)]
+            },
+            {
+                label: statusArr[2],
+                stack: 'stack2',
+                backgroundColor: ['#9B9B9B'],
+                data: [getMonthlyOrders(currentMonth - 4, 2), getMonthlyOrders(currentMonth - 3, 2), getMonthlyOrders(currentMonth - 2, 2), getMonthlyOrders(currentMonth - 1, 2), getMonthlyOrders(currentMonth, 2), getMonthlyOrders(currentMonth + 1, 2)]
+            }
+            ,
+            {
+                label: statusArr[1],
+                stack: 'stack2',
+                backgroundColor: ['#8586EF'],
+                data: [getMonthlyOrders(currentMonth - 4, 1), getMonthlyOrders(currentMonth - 3, 1), getMonthlyOrders(currentMonth - 2, 1), getMonthlyOrders(currentMonth - 1, 1), getMonthlyOrders(currentMonth, 1), getMonthlyOrders(currentMonth + 1, 1)]
+            },
+            {
+                label: statusArr[0],
+                stack: 'stack2',
+                backgroundColor: ['#F09083'],
+                data: [getMonthlyOrders(currentMonth - 4, 0), getMonthlyOrders(currentMonth - 3, 0), getMonthlyOrders(currentMonth - 2, 0), getMonthlyOrders(currentMonth - 1, 0), getMonthlyOrders(currentMonth, 0), getMonthlyOrders(currentMonth + 1, 0)]
             }
         ]
     }
@@ -144,13 +229,29 @@ export default function DashboardPage() {
             {
                 type: 'pie',
                 label: 'Sales',
-                backgroundColor: ['#1B98F2', '#EB6F6B', '#252726', '#D1DFDB', '#06E127', '#0BE1B9', '#F76C0A', '#E0A901', '#E0CC8B', '#D900E0'],
+                backgroundColor: ['#1B98F2', '#EB6F6B', '#252726', '#7674F5', '#06E127', '#0BE1B9', '#F76C0A', '#E0A901', '#E0CC8B', '#D900E0',"#F5B54F"],
                 data: listBrands.map(brand => { return (getProductBrandTotalRevenue(brand.brandID)) }),
 
 
             }
         ]
     }
+
+    const pieRatingData = {
+        labels: listBrands.filter(item => item.status == 1).map(brand => { if (brand.status == 1) { return (brand.name) } }),
+        datasets: [
+            {
+                type: 'pie',
+                label: 'Sales',
+                backgroundColor: ['#1B98F2', '#EB6F6B', '#252726', '#7674F5', '#06E127', '#0BE1B9', '#F76C0A', '#E0A901', '#E0CC8B', '#D900E0',"#F5B54F"],
+                data: listBrands.map(brand => { return (getProductBrandRating(brand.brandID)) }),
+
+
+            }
+        ]
+    }
+
+
 
     useEffect(() => {
         initData();
@@ -190,7 +291,7 @@ export default function DashboardPage() {
                                 </tr>
                                 {listUserOrders.sort((a, b) => b.pendingDate.localeCompare(a.pendingDate)).slice(0, 6).map(userOrder => {
                                     return (
-                                        <tr key={userOrder.userOrderID}>
+                                        <tr className="even:bg-sky-50" key={userOrder.userOrderID}>
                                             <td className='border text-center '>TSTRN{userOrder.userOrderID}</td>
                                             <td className='border text-center'>{userOrder.pendingDate}</td>
                                             <td className={`text-processColor border text-center font-medium ${userOrder.status == 1 ? "animate-bounce text-processingColor" : userOrder.status == 0 ? "text-cancelColor" : userOrder.status == 3 ? "text-reviewColor" : userOrder.status == 4 ? "text-acceptColor" : ""}`}>
@@ -209,7 +310,7 @@ export default function DashboardPage() {
 
                         </div>
                     </div>
-                    <div className='w-3/5 h-64 mx-10'>
+                    <div className='w-1/2 h-64 mx-10'>
                         <Bar options={{
                             maintainAspectRatio: false,
                             responsive: true,
@@ -218,16 +319,78 @@ export default function DashboardPage() {
                                     display: true,
                                     text: 'Revenue last 6 months'
                                 },
+                                legend: {
+                                    display: false
+                                },
+                                datalabels: {
+                                    display: false
+                                }
 
                             }
                         }} data={data}></Bar>
                     </div>
                 </div>
+                <p className='font-bold mt-6'>Order status</p>
+                <div className=' flex flex-row mt-4'>
+                    <div className='w-2/5 h-64 mx-10'>
+                    
+                        <Bar className='w-1/2' options={{
+                            maintainAspectRatio: false,
+                            responsive: true,
+                            plugins: {
+                                title: {
+                                    display: true,
+                                    text: 'Order status last 6 months'
+                                },
+                                legend: {
+                                    display: false
+                                },
+                                datalabels:{
+                                    display:'auto',
+                                },
+                                scales: {
+                                    xAxes: [{
+                                        stacked: true
+                                    }],
+                                    yAxes: [{
+                                        stacked: true
+                                    }]
+                                }
 
-                <div className='flex flex-row h-64 mt-10'>
-                    <div className='w-2/5 h-64'>
+                            }
+                        }} data={OrderAmountDetailData}></Bar>
+                    </div>
+                    <div className='w-3/5 h-64 mx-10'>
+                        <Bar className='w-1/2' options={{
+                            maintainAspectRatio: false,
+                            responsive: true,
+                            plugins: {
+                                title: {
+                                    display: true,
+                                    text: 'Total order last 6 months'
+                                },
+                                legend: {
+                                    display: false
+                                },
+                                scales: {
+                                    xAxes: [{
+                                        stacked: true
+                                    }],
+                                    yAxes: [{
+                                        stacked: true
+                                    }]
+                                }
+
+                            }
+                        }} data={OrderAmountData}></Bar>
+                    </div>
+                </div>
+
+                <p className='font-bold mt-6'>Top Sales</p>
+                <div className='flex flex-row h-96'>
+                    <div className='w-2/5 h-96'>
                         <Pie options={{
-                            maintainAspectRatio: false, maintainAspectRatio: false,
+                            maintainAspectRatio: false,
                             responsive: true,
                             plugins: {
                                 title: {
@@ -245,23 +408,25 @@ export default function DashboardPage() {
                                             return percentage.toFixed(1) + "%";
                                         }
                                     },
+                                    color:'white',
+                                    display:'auto'
                                 },
                             }
                         }} data={pieData}></Pie>
                     </div>
                     <div className=' w-3/5 mx-4'>
-                        <p className='font-bold'>Top Products</p>
+                        
                         <div className='min-h-100 bg-inputBackgroundColor border border-inputBorderColor mt-3 '>
                             <table className='w-full border table-fixed'>
                                 <tr className='border'>
-                                    <th>Product Name</th>
+                                    <th className='w-4/5'>Product Name</th>
                                     <th>Total sale</th>
                                 </tr>
                                 {listProducts.sort((a, b) => b.sold - a.sold).slice(0, 6).map(prod => {
                                     if (prod.sold > 0) {
                                         return (
                                             <tr className='even:bg-sky-50' key={prod.productID}>
-                                                <td className='border text-center truncate overflow-hidden'>{prod.productName}</td>
+                                                <td className='border text-center line-clamp-2 overflow-hidden'>{prod.productName}</td>
                                                 <td className='border text-center'>{prod.sold}</td>
                                             </tr>
                                         )
@@ -275,6 +440,54 @@ export default function DashboardPage() {
                         </div>
                     </div>
 
+                </div>
+
+
+                <p className='font-bold mt-6'>Top Rating</p>
+                <div className='flex flex-row h-96 mt-2'>
+                    
+                    <div className=' w-3/5 mx-4'>
+                        
+                        <div className='min-h-100 bg-inputBackgroundColor border border-inputBorderColor mt-3 '>
+                            <table className='w-full border table-fixed'>
+                                <tr className='border'>
+                                    <th className='w-4/5'>Product Name</th>
+                                    <th>Total rating</th>
+                                </tr>
+                                {listProducts.sort((a, b) => b.totalRating - a.totalRating).slice(0, 6).map(prod => {
+                                    if (prod.sold > 0) {
+                                        return (
+                                            <tr className='even:bg-sky-50' key={prod.productID}>
+                                                <td className='border text-center line-clamp-2 overflow-hidden'>{prod.productName}</td>
+                                                <td className='border text-center'>{prod.totalRating}</td>
+                                            </tr>
+                                        )
+                                    }
+                                }
+                                )
+
+                                }
+                            </table>
+
+                        </div>
+                    </div>
+                    <div className='w-2/5 h-96'>
+                        <Pie options={{
+                            maintainAspectRatio: false,
+                            responsive: true,
+                            plugins: {
+                                title: {
+                                    display: true,
+                                    text: 'Total Rating By Brand (6 months)',
+                                },
+                                datalabels: {
+                                    
+                                    color:'white',
+                                    display:'auto'
+                                },
+                            }
+                        }} data={pieRatingData}></Pie>
+                    </div>
                 </div>
 
                 <div className='h-12'></div>

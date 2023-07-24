@@ -70,28 +70,27 @@ export default function OrderPage() {
                     <table className="w-full mt-10">
                         <tr className="">
                             <th className="border">#</th>
-                            <th className="border">Total</th>
-                            <th className="border">Note</th>
-                            <th className="border w-2/12">Status</th>
                             <th className="border">Receiver</th>
+                            <th className="border">Note</th>
                             <th className="border">shipping Fee</th>
+                            <th className="border">Total</th>
+                            <th className="border w-2/12">Status</th>
                         </tr>
 
                         {listUserOrders.slice((currentPage - 1) * itemPerPage, itemPerPage * currentPage).map(userOrder => {
                             return (
                                 <tr className="even:bg-sky-50 " key={userOrder.userOrderID}>
                                     <td className="text-center border py-3">{userOrder.userOrderID}</td>
-                                    <td className="text-center border">{priceFormat(userOrder.totalPrice)}</td>
+                                    <td className="text-center border">{userOrder.receiver}</td>
                                     <td className="text-center border">{userOrder.note}</td>
+                                    <td className="text-center border">{priceFormat(userOrder.shippingFee)}</td>
+                                    <td className="text-center border">{priceFormat(userOrder.totalPrice)}</td>
                                     <td className={`text-processColor border text-center font-medium ${userOrder.status == 1 ? "animate-bounce text-processingColor" : userOrder.status == 0 ? "text-cancelColor" : userOrder.status == 3 ? "text-reviewColor" : userOrder.status == 4 ? "text-acceptColor" : ""}`}>
                                         {userOrder.status < 4 ?
                                             <button onClick={() => onEditIconPressed(userOrder)} className="hover:font-bold">{statusArr[userOrder.status]}</button>
                                             :
                                             <p>{statusArr[userOrder.status]}</p>}
                                     </td>
-                                    <td className="text-center border">{userOrder.receiver}</td>
-                                    <td className="text-center border">{priceFormat(userOrder.shippingFee)}</td>
-
                                 </tr>
                             )
                         })}

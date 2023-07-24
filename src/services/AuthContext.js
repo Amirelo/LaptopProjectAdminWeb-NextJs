@@ -9,6 +9,8 @@ export const AuthContext =createContext();
 export const AuthProvider = ({ children }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [user,setUser] = useState({});
+    const [searchText, setSearchText] = useState("");
+    const [currentTab,setCurrentTab] = useState("Dashboard");
 
     const userLogout = () => {
         setUser({})
@@ -29,7 +31,7 @@ export const AuthProvider = ({ children }) => {
         }
     }
     return(
-    <AuthContext.Provider value={{ userLogout, userLogin,isLoggedIn,user }}>
+    <AuthContext.Provider value={{ userLogout, userLogin,isLoggedIn,user,searchText,setSearchText }}>
         {children}
     </AuthContext.Provider>)
 }

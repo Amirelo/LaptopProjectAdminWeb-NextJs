@@ -1,16 +1,20 @@
 'use-client'
 
 import { getAllBrands, updateBrandByID } from "@/services/AppService";
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import Image from "next/image";
 import PaginationTab from "@/components/PaginationTab";
 import ActionTop from "@/components/ActionTop";
 import EditBrandTab from "@/components/EditBrandTab";
 import DeleteMessage from "@/components/DeleteMessage";
+import { AuthContext } from "@/services/AuthContext";
 
 
 export default function BrandPage() {
+    const {searchText} = useContext(AuthContext);
+
     const [listBrands, setListBrands] = useState([]);
+    const [listSort, setListSort] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
     const [currentPage, setCurrentPage] = useState(1);
@@ -64,6 +68,7 @@ export default function BrandPage() {
     const initData = async () => {
         const brandRes = await getAllBrands();
         setListBrands(brandRes.data);
+        setListSort(brandRes.data);
         console.log("Brands", brandRes.data)
 
         setPageCount(Math.ceil(brandRes.data.length / itemPerPage))
@@ -72,22 +77,31 @@ export default function BrandPage() {
     }
 
     const dataSort = () => {
-        let currentSort;
+        let myList = [...listBrands]
+        if(searchText!= null){
+            myList = myList.filter(item => (item.name.toLowerCase().includes(searchText)) );
+        }
+        
         switch (sortType) {
             case "NAME":
-                currentSort = listBrands.sort((a, b) => a.name.localeCompare(b.name))
+                myList.sort((a, b) => a.name.localeCompare(b.name))
                 break;
             default:
-                currentSort = listBrands.sort((a,b) => a.brandID - b.brandID)
+                myList.sort((a,b) => a.brandID - b.brandID)
         }
-        console.log("sortype:", sortType)
-        console.log("Current sort", currentSort)
-        return currentSort.sort((a, b) => b.status - a.status)
+        myList.sort((a, b) => b.status - a.status)
+        console.log(myList)
+        return setListSort(myList)
     }
 
     useEffect(() => {
         initData();
     }, [dataChange])
+
+    useEffect(()=>{
+        dataSort();
+        console.log(searchText)
+    },[searchText])
 
 
 
@@ -122,7 +136,7 @@ export default function BrandPage() {
                             <th className="border" colSpan={2}>Action</th>
                         </tr>
 
-                        {dataSort().slice((currentPage - 1) * itemPerPage, itemPerPage * currentPage).map(brand => {
+                        {listSort.slice((currentPage - 1) * itemPerPage, itemPerPage * currentPage).map(brand => {
                             return (
                                 <tr className={brand.status == 0 ? "bg-slate-500/25" : "even:bg-sky-50"} key={brand.brandID}>
                                     <td className="text-center border">{brand.brandID}</td>
