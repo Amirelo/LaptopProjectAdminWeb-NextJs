@@ -11,35 +11,43 @@ import ProcessorPage from "@/pages/ProcessorPage";
 import ProductPage from "@/pages/ProductPage";
 import ReportPage from "@/pages/ReportPage";
 import ScreenPage from "@/pages/ScreenPage";
-import SettingPage from "@/pages/SettingPage";
 import StoragePage from "@/pages/StoragePage";
 import UserPage from "@/pages/UserPage";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthContext, useAuth } from "./AuthContext";
 
 export default function AppNavigation() {
-    const[currentSelection,setCurrentSelection] = useState();
+    const {isLoggedIn} = useContext(AuthContext);
+
     return (
         <div>
             <BrowserRouter>
-                <NavigationBar />
-                <div className='ms-72 bg-white pt-8 ps-4'>
+
+                {isLoggedIn == false ?
                     <Routes>
-                        <Route path="/login" element={<LoginPage />} />
-                        <Route path="/" element={<DashboardPage />} />
-                        <Route path="/products" element={<ProductPage />} />
-                        <Route path="/orders" element={<OrderPage />} />
-                        <Route path="/users" element={<UserPage />} />
-                        <Route path="/reports" element={<ReportPage />} />
-                        <Route path="/settings" element={<SettingPage />} />
-                        <Route path="/brands" element={<BrandPage />} />
-                        <Route path="/processors" element={<ProcessorPage />} />
-                        <Route path="/screens" element={<ScreenPage />} />
-                        <Route path="/memories" element={<MemoryPage />} />
-                        <Route path="/storages" element={<StoragePage />} />
-                        <Route path="/opersys" element={<OSPage />} />
+                        <Route path="/" element={<LoginPage />} />
                     </Routes>
-                </div>
+                    : <>
+                        <NavigationBar />
+                        <div className='ms-72 bg-white pt-8 ps-4'>
+                            <Routes >
+
+                                <Route path="/" element={<DashboardPage />} />
+                                <Route path="/products" element={<ProductPage />} />
+                                <Route path="/orders" element={<OrderPage />} />
+                                <Route path="/users" element={<UserPage />} />
+                                <Route path="/reports" element={<ReportPage />} />
+                                <Route path="/brands" element={<BrandPage />} />
+                                <Route path="/processors" element={<ProcessorPage />} />
+                                <Route path="/screens" element={<ScreenPage />} />
+                                <Route path="/memories" element={<MemoryPage />} />
+                                <Route path="/storages" element={<StoragePage />} />
+                                <Route path="/opersys" element={<OSPage />} />
+                            </Routes>
+
+                        </div>
+                    </>}
             </BrowserRouter>
         </div>
     )

@@ -122,6 +122,17 @@ export const getAllUserOrders = async () => {
     return res.data;
 }
 
+export const updateUserStatus = async (status,email) => {
+    const data = {
+        data:status,
+        email:email,
+        type:"STATUS"
+    }
+    console.log(data)
+    const res = await axiosInstance.post('/user/update-user-info.php',data);
+    return res.data;
+}
+
 export const updateUserOrderStatus = async (userOrderID, userID, status, type) => {
     const data = {
         userOrderID: userOrderID,

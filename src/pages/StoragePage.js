@@ -120,7 +120,7 @@ export default function StoragePage() {
                             return (
                                 <tr className={storage.status == 0 ? "bg-slate-500/25" : "even:bg-sky-50"}  key={storage.storageID}>
                                     <td className="text-center border">{storage.storageID}</td>
-                                    <td className="text-center border">{storage.type}</td>
+                                    <td className="text-center border">{(storage.maxSlots - storage.availableSlots) + " " + storage.type}</td>
                                     <td className="text-center border ">{storage.availableSlots}</td>
                                     <td className="text-center border">{storage.currentStorage}</td>
 
