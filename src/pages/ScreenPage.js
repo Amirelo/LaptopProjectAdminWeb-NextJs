@@ -1,22 +1,26 @@
 'use-client'
 
 import { getAllScreens, updateScreen } from "@/services/AppService";
-import { useEffect, useState } from "react"
-import Image from "next/image";
+import { useContext, useEffect, useState } from "react"
 import ActionTop from "@/components/ActionTop";
 import PaginationTab from "@/components/PaginationTab";
 import DeleteMessage from "@/components/DeleteMessage";
 import EditScreenTab from "@/components/EditScreenTab";
+import { AuthContext } from "@/services/AuthContext";
 
 
 export default function ScreenPage() {
+    const {searchText} = useContext(AuthContext);
+
     const [listScreens, setListScreens] = useState([]);
+    const [listSort, setListSort] = useState([]);
+
     const [isLoading, setIsLoading] = useState(false);
 
     const [currentPage, setCurrentPage] = useState(1);
     const [itemPerPage, setItemPerPage] = useState(5);
     const [pageCount, setPageCount] = useState(0);
-    
+
     const [showEditTab, setShowEditTab] = useState(false);
     const [showDeleteTab, setShowDeleteTab] = useState(false);
     const [currentItem, setCurrentItem] = useState({});
@@ -66,20 +70,27 @@ export default function ScreenPage() {
     }
 
     const dataSort = () => {
-        let currentSort;
-        switch (sortType) {
-            case "NAME":
-                currentSort = listScreens.sort((a, b) => a.name.localeCompare(b.name))
-                break;
-            default:
-                currentSort = listScreens.sort((a, b) => a.brandID - b.brandID)
+        let myList = [...listScreens]
+        if (searchText != null) {
+            myList = myList.filter(item => (item.resolution.toLowerCase().includes(searchText)));
         }
-        return currentSort.sort((a, b) => b.status - a.status)
+
+        switch (sortType) {
+            default:
+                myList.sort((a, b) => a.screenID - b.screenID)
+        }
+        myList.sort((a, b) => b.status - a.status)
+        console.log(myList)
+        setPageCount(Math.ceil(myList.length / itemPerPage))
+        console.log("Count:", Math.ceil(myList.length / itemPerPage));
+
+        return setListSort(myList)
     }
 
     const initData = async () => {
         const screenRes = await getAllScreens();
         setListScreens(screenRes.data);
+        setListSort(screenRes.data);
         console.log("Screen", screenRes.data)
 
         setPageCount(Math.ceil(screenRes.data.length / itemPerPage))
@@ -90,6 +101,11 @@ export default function ScreenPage() {
     useEffect(() => {
         initData();
     }, [dataChange])
+
+
+    useEffect(() => {
+        dataSort();
+    }, [searchText])
 
     return (
         isLoading == false ?
@@ -114,7 +130,7 @@ export default function ScreenPage() {
                             <th className="border" colSpan={2}>Action</th>
                         </tr>
 
-                        {dataSort().slice((currentPage - 1) * itemPerPage, itemPerPage * currentPage).map(screen => {
+                        {listSort.slice((currentPage - 1) * itemPerPage, itemPerPage * currentPage).map(screen => {
                             return (
                                 <tr className={screen.status == 0 ? "bg-slate-500/25" : "even:bg-sky-50"} key={screen.screenID}>
                                     <td className="text-center border">{screen.screenID}</td>

@@ -103,10 +103,10 @@ export default function NavigationBar() {
         {/* Header */}
         <div className='flex flex-row items-center w-full justify-between mr-4'>
           <p className=" text-xl font-bold">{selection}</p>
-          
+
           {selection!= "Dashboard"?
-          <div className='rounded bg-inputBackgroundColor border-b-inputBorderColor w-80 h-12 flex flex-row items-center'>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" class="w-6 h-6">
+          <div className='rounded border bg-inputBackgroundColor border-b-inputBorderColor w-80 h-12 flex flex-row items-center'>
+            <svg className='ps-2 w-6 h-6' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" class="w-6 h-6">
               <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
             </svg>
             <input name="MyInput" value={searchText} onChange={event => setSearchText(event.target.value)} placeholder='Search here' className='w-80 h-12 ps-8 bg-transparent absolute' />
