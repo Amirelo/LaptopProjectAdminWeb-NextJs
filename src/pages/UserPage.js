@@ -1,15 +1,19 @@
 'use-client'
 
 import { getAllUsers, updateUserStatus } from "@/services/AppService";
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import Image from "next/image";
 import PaginationTab from "@/components/PaginationTab";
 import ActionTop from "@/components/ActionTop";
 import DeleteMessage from "@/components/DeleteMessage";
+import { AuthContext } from "@/services/AuthContext";
 
 
 export default function UserPage() {
+    const {searchText} = useContext(AuthContext);
+
     const [listUsers, setListUsers] = useState([]);
+    const [listSort,setListSort] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [currentItem, setCurrentItem] = useState({});
 
@@ -59,6 +63,7 @@ export default function UserPage() {
     const initData = async () => {
         const userRes = await getAllUsers();
         setListUsers(userRes.data);
+        setListSort(userRes.data);
         console.log("User", userRes.data)
 
         setPageCount(Math.ceil(userRes.data.length / itemPerPage))
@@ -67,19 +72,31 @@ export default function UserPage() {
     }
 
     const dataSort = () => {
-        let currentSort;
-        switch (sortType) {
-            case "NAME":
-                currentSort = listUsers.sort((a, b) => a.name.localeCompare(b.name))
-                break;
-            default:
-                currentSort = listUsers.sort((a, b) => a.brandID - b.brandID)
+        let myList = [...listUsers]
+        if (searchText != null) {
+            myList = myList.filter(item => ((item.username+" "+item.email +" " +statusNumToText[item.accountStatus] +" "+item.phonenumber +" "+item.fullname+" "+item.birthday +" "+item.createDate).toLowerCase().includes(searchText.toLowerCase())));
         }
-        return currentSort.sort((a, b) => b.accountStatus - a.accountStatus)
+
+        switch (sortType) {
+            default:
+                myList.sort((a, b) => a.userOrderID - b.userOrderID)
+        }
+        myList.sort((a, b) => b.status - a.status)
+        console.log(myList)
+        setPageCount(Math.ceil(myList.length / itemPerPage))
+        console.log("Count:", Math.ceil(myList.length / itemPerPage));
+
+        return setListSort(myList)
     }
+
+
     useEffect(() => {
         initData();
     }, [dataChange])
+
+    useEffect(() => {
+        dataSort();
+    }, [searchText])
 
     return (
         isLoading == false ?
@@ -105,7 +122,7 @@ export default function UserPage() {
                             <th className="border" colSpan={2}>Action</th>
                         </tr>
 
-                        {dataSort().slice((currentPage - 1) * itemPerPage, itemPerPage * currentPage).map(user => {
+                        {listSort.slice((currentPage - 1) * itemPerPage, itemPerPage * currentPage).map(user => {
                             return (
                                 <tr className={user.accountStatus == 0 ? "bg-slate-500/25" : "even:bg-sky-50"} key={user.userId}>
                                     <td className="text-center border">{user.userId}</td>
