@@ -1,0 +1,1 @@
+export const itemStatusArray = ["Disable","Active"];

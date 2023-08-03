@@ -13,10 +13,10 @@ export default function LoginPage() {
 
 
     return (
-        <div>
-            <img className="absolute top-0 left-0 w-full h-full" src={'/static/bglogin2.jpg'} alt="Login background" />
-            <div className="relative top-24 left-1/4">
-                <div className=" w-1/2 h-1/2 bg-mainSubColor/50 rounded-sm">
+        <div className="flex justify-center w-screen">
+            <img className="absolute top-0 left-0 w-screen h-full" src={'/static/bglogin2.jpg'} alt="Login background" />
+            <div className="relative w-screen h-fit  flex flex-1">
+                <div className=" w-1/3 h-screen bg-mainSubColor/50 rounded-sm">
                     <p className="text-center text-2xl font-bold pt-10">Sign In</p>
                     <div className="flex items-center justify-center mt-8">
                         <p className="pr-3">Username</p>

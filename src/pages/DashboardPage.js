@@ -6,7 +6,7 @@ import { getAllBrands, getAllProduct, getAllUserOrders, getAllUsers } from '@/se
 import { useEffect, useState } from 'react';
 import ProductListItem from '@/components/ProductListItem';
 import UserOrderList from '@/components/UserOrderList';
-import { ArcElement, BarController, BarElement, CategoryScale, Chart, Legend, LineElement, LinearScale, PointElement, Title, Tooltip } from 'chart.js';
+import { ArcElement, BarController, BarElement, CategoryScale, Chart, Legend, LineElement, LinearScale, PointElement, Ticks, Title, Tooltip } from 'chart.js';
 import { Bar, Line, Pie } from 'react-chartjs-2';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import EditOrderTab from '@/components/EditOrderTab';
@@ -100,7 +100,7 @@ export default function DashboardPage() {
         let total = 0;
         if (type == null) {
             listUserOrders.map(order => {
-                if (order.status > 2 && parseInt(order.deliveryDate.slice(5, 7)) == month) {
+                if (parseInt(order.pendingDate.slice(5, 7)) == month) {
                     total++;
                 }
             })
@@ -173,7 +173,7 @@ export default function DashboardPage() {
         ]
     }
 
-    const OrderAmountData = {
+    const OrderAmountDetailData = {
         labels: [checkMonth(-5), checkMonth(-4), checkMonth(-3), checkMonth(-2), checkMonth(-1), checkMonth(0)],
         datasets: [
             {
@@ -182,13 +182,7 @@ export default function DashboardPage() {
                 label: 'Total orders',
                 backgroundColor: ['#95B2E5', '#D3A1E5', '#E6D2AF', '#C5E8CF', '#B5E9AA', '#E8B7D1'],
                 data: [getMonthlyOrders(currentMonth - 4), getMonthlyOrders(currentMonth - 3), getMonthlyOrders(currentMonth - 2), getMonthlyOrders(currentMonth - 1), getMonthlyOrders(currentMonth), getMonthlyOrders(currentMonth + 1)]
-            }
-        ]
-    }
-
-    const OrderAmountDetailData = {
-        labels: [checkMonth(-5), checkMonth(-4), checkMonth(-3), checkMonth(-2), checkMonth(-1), checkMonth(0)],
-        datasets: [
+            },
             {
                 label: statusArr[4],
                 stack: 'stack2',
@@ -331,10 +325,9 @@ export default function DashboardPage() {
                     </div>
                 </div>
                 <p className='font-bold mt-6'>Order status</p>
-                <div className=' flex flex-row mt-4'>
-                    <div className='w-2/5 h-64 mx-10'>
+                    <div className='h-64 mx-10'>
                     
-                        <Bar className='w-1/2' options={{
+                        <Bar options={{
                             maintainAspectRatio: false,
                             responsive: true,
                             plugins: {
@@ -359,31 +352,7 @@ export default function DashboardPage() {
 
                             }
                         }} data={OrderAmountDetailData}></Bar>
-                    </div>
-                    <div className='w-3/5 h-64 mx-10'>
-                        <Bar className='w-1/2' options={{
-                            maintainAspectRatio: false,
-                            responsive: true,
-                            plugins: {
-                                title: {
-                                    display: true,
-                                    text: 'Total order last 6 months'
-                                },
-                                legend: {
-                                    display: false
-                                },
-                                scales: {
-                                    xAxes: [{
-                                        stacked: true
-                                    }],
-                                    yAxes: [{
-                                        stacked: true
-                                    }]
-                                }
-
-                            }
-                        }} data={OrderAmountData}></Bar>
-                    </div>
+                    
                 </div>
 
                 <p className='font-bold mt-6'>Top Sales</p>

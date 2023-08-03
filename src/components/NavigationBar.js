@@ -27,7 +27,7 @@ export default function NavigationBar() {
       <nav className='flex flex-col w-72 h-full bg-inputBackgroundColor border-inputBorderColor border items-center fixed overflow-y-auto'>
         <div className='flex flex-row items-center mt-7'>
           <Image width={32} height={32} className='mr-2' alt='App icon' src='/static/logo.png' />
-          <span className="font-bold">Store </span>
+          <span className="font-bold">Store&nbsp;</span>
           <span className="text-mainColor font-bold">Manager</span>
         </div>
         <NavLink to={"/"} onClick={() => [setSelection('Dashboard'), setSearchText("")]} className={`p-4 w-56 mt-7 rounded-md flex flex-row transition-colors duration-300 ${selection == 'Dashboard' ? "bg-mainSubColor" : "hover:bg-mainSubColor"}`}>
@@ -66,7 +66,7 @@ export default function NavigationBar() {
         <div className={showSpecsList ? "opacity-0 h-0 top-1/3 pointer-events-none" : "opacity-100 ease-linear duration-500"} >
           <SpecsMenu selection={selection} setSelection={setSelection} />
         </div>
-        <NavLink to={"/orders"} onClick={() => setSelection('Orders')} className={`duration-1000 ease-in p-4 w-56 mt-1 rounded-md flex flex-row transition-all ${selection == 'Orders' ? "bg-mainSubColor" : "hover:bg-mainSubColor"}`}>
+        <NavLink to={"/orders"} onClick={() => setSelection('Orders')} className={`duration-300 ease-in p-4 w-56 mt-1 rounded-md flex flex-row transition-all ${selection == 'Orders' ? "bg-mainSubColor" : "hover:bg-mainSubColor"}`}>
           <svg className='w-6 h-6' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" class="w-6 h-6">
             <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
           </svg>

@@ -1,4 +1,5 @@
 import { getAllBrands, getAllMemories, getAllOperSys, getAllProcessors, getAllScreens, getAllStorages, insertProdct, updateProduct } from "@/services/AppService";
+import { itemStatusArray } from "@/utils/array";
 import { dataCheck } from "@/utils/helper";
 import { memo, useEffect, useState } from "react"
 
@@ -222,8 +223,8 @@ export default function EditProductTab({ onBackgroundPressed, onDeletePress, ite
 
                     <div className="flex flex-row items-center justify-center mx-4 mt-4">
                         <p className=" mr-2">Processor</p>
-                        <select onChange={event=>setCurrentProcessor(listProcessors[event.target.value-1])} className="bg-mainSubColor w-3/4 self-center text-center flex flex-1 py-2 mt-4 border rounded-md">
-                        {listProcessors.map(pros => {
+                        <select onChange={event=>setCurrentProcessor(listProcessors[event.target.value-1])} className="bg-mainSubColor w-3/4 self-center text-center flex flex-1 py-2 border rounded-md">
+                        {listProcessors.sort((a,b)=>a.name.localeCompare(b.name)).map(pros => {
                                 return (
                                     <option selected={item ? pros.processorID == item.processorID ? "selected" : "" : ""} value={pros.processorID} key={pros.processorID}>{pros.name}</option>
                                 )
@@ -238,8 +239,8 @@ export default function EditProductTab({ onBackgroundPressed, onDeletePress, ite
                     <div className="mt-4 flex flex-row justify-between">
                         <div className="flex flex-row items-center mx-4 flex-1">
                             <p className=" mr-2">Brand</p>
-                            <select onChange={event=>setCurrentBrand(listBrands[event.target.value-1])} className="bg-mainSubColor w-3/4 self-center text-center flex flex-1 py-2 mt-4 border rounded-md">
-                                {listBrands.map(brand => {
+                            <select onChange={event=>setCurrentBrand(listBrands[event.target.value-1])} className="bg-mainSubColor w-3/4 self-center text-center flex flex-1 py-2 border rounded-md">
+                                {listBrands.sort((a,b)=> a.name.localeCompare(b.name)).map(brand => {
                                     return (
                                         <option selected={item ? brand.brandID == item.brandID ? "selected" : "" : ""} value={brand.brandID} key={brand.brandID}>{brand.name}</option>
                                     )
@@ -250,8 +251,8 @@ export default function EditProductTab({ onBackgroundPressed, onDeletePress, ite
 
                         <div className="flex flex-row items-center mx-4 flex-1">
                             <p className=" mr-2">Screen</p>
-                            <select onChange={event=>setCurrentScreen(listScreens[event.target.value-1])} className="bg-mainSubColor w-3/4 self-center text-center flex flex-1 py-2 mt-4 border rounded-md">
-                                {listScreens.map(curItem => {
+                            <select onChange={event=>setCurrentScreen(listScreens[event.target.value-1])} className="bg-mainSubColor w-3/4 self-center flex flex-1 py-2 border rounded-md">
+                                {listScreens.sort((a,b)=>a.resolution.localeCompare(b.resolution)).map(curItem => {
                                     return (
                                         <option selected={item ? curItem.screenID == item.screenID ? "selected" : "" : ""} value={curItem.screenID} key={curItem.screenID}>{curItem.resolution + " " + curItem.screenSize}</option>
                                     )
@@ -265,8 +266,8 @@ export default function EditProductTab({ onBackgroundPressed, onDeletePress, ite
                     <div className="mt-4 flex flex-row justify-between ">
                         <div className="flex flex-row items-center mx-4 flex-1">
                             <p className=" mr-2">RAM</p>
-                            <select onChange={event=>setCurrentMemory(listMemories[event.target.value-1])} className="bg-mainSubColor w-3/4 self-center text-center flex flex-1 py-2 mt-4 border rounded-md">
-                                {listMemories.map(curItem => {
+                            <select onChange={event=>setCurrentMemory(listMemories[event.target.value-1])} className="bg-mainSubColor w-3/4 flex flex-1 py-2 border rounded-md">
+                                {listMemories.sort((a,b)=>(b.currentRAM+" "+b.type).localeCompare(a.currentRAM+" "+a.type)).map(curItem => {
                                     return (
                                         <option selected={item ? curItem.memoryID == item.memoryID ? "selected" : "" : ""} value={curItem.memoryID} key={curItem.memoryID}>{curItem.currentRAM + " " + curItem.type + " " + curItem.speed}</option>
                                     )
@@ -277,10 +278,10 @@ export default function EditProductTab({ onBackgroundPressed, onDeletePress, ite
 
                         <div className="flex flex-row items-center mx-4 flex-1">
                             <p className=" mr-2">Storage</p>
-                            <select onChange={event=>setCurrentStorage(listStorages[event.target.value-1])} className="bg-mainSubColor w-3/4 self-center text-center flex flex-1 py-2 mt-4 border rounded-md">
-                                {listStorages.map(curItem => {
+                            <select onChange={event=>setCurrentStorage(listStorages[event.target.value-1])} className="bg-mainSubColor w-3/4 self-center text-center flex flex-1 py-2 border rounded-md">
+                                {listStorages.sort((a,b)=> (a.type+" "+a.currentStorage).localeCompare((b.type+" "+b.currentStorage))).map(curItem => {
                                     return (
-                                        <option selected={item ? curItem.storageID == item.storageID ? "selected" : "" : ""} value={curItem.storageID} key={curItem.storageID}>{(curItem.maxSlots - curItem.availableSlots) + " " + curItem.type + " " + curItem.currentStorage}</option>
+                                        <option selected={item ? curItem.storageID == item.storageID ? "selected" : "" : ""} value={curItem.storageID} key={curItem.storageID}>{curItem.type + " " + curItem.currentStorage}</option>
                                     )
                                 })
                                 }
@@ -291,8 +292,8 @@ export default function EditProductTab({ onBackgroundPressed, onDeletePress, ite
                     <div className="mt-4 flex flex-row justify-between ">
                         <div className="flex flex-row items-center mx-4 flex-1">
                             <p className=" mr-2">OS</p>
-                            <select onChange={event =>setCurrentOS(listOS[event.target.value-1])} className="bg-mainSubColor w-3/4 self-center text-center flex flex-1 py-2 mt-4 border rounded-md">
-                                {listOS.map(curItem => {
+                            <select onChange={event =>setCurrentOS(listOS[event.target.value-1])} className="bg-mainSubColor w-3/4 self-center text-center flex flex-1 py-2 border rounded-md">
+                                {listOS.sort((a,b)=>(b.version+" "+b.type).localeCompare(a.version+" "+a.type)).map(curItem => {
                                     return (
                                         <option selected={item ? curItem.operatingSystemID == item.operatingSystemID ? "selected" : "" : ""} value={curItem.operatingSystemID} key={curItem.operatingSystemID}>{curItem.version}</option>
                                     )
@@ -304,14 +305,36 @@ export default function EditProductTab({ onBackgroundPressed, onDeletePress, ite
                         {item?
                         <div className="flex flex-row items-center mx-4 flex-1">
                             <p className=" mr-2">Status</p>
-                            <input className="bg-mainSubColor ps-2 flex-1 w-1/4 py-2 border rounded-md" placeholder="Status" onChange={event => setStatus(event.target.value)} value={status} />
+                            <select onChange={event => setStatus(event.target.value)} className="bg-mainSubColor w-3/4 self-center text-center flex flex-1 py-2 mt-4 border rounded-md">
+
+
+                        {itemStatusArray.map((curItem, index) => {
+                            return (
+                                <option selected={index == status ? "selected" : "" } value={index} key={index}>{curItem}</option>
+                            )
+                        })
+                        }
+                    </select>
                         </div>
                         :<></>}
                     </div>
 
                     <div className="flex flex-row items-center justify-around mt-6">
                         <button onClick={onBackgroundPressed} className="bg-reviewColor hover:font-bold text-white px-4 py-2 rounded-md">Cancel</button>
-                        <button onClick={onEditButtonPressed} className="bg-acceptColor hover:font-bold text-white px-4 py-2 rounded-md">Confirm</button>
+                        <button disabled={item != null && item.modelCode!=modelCode
+                            && item.releasedDate!=rlsDate && item.originPrice != originPrice
+                            && item.onSale!=onSale && item.currentPrice != curPrice
+                            && item.productQuantity!= prodQuan && item.length!= prodLength
+                            && item.width!=prodWidth && item.height != prodHeight
+                            && item.weight!=prodWeight && item.manufacturer!=manufacturer
+                            && item.warranty!=warranty && item.sold!= sold
+                            && item.processorID!=currentProcessor.processorID
+                            && item.brandID!=currentBrand.brandID
+                            && item.screenID!= currentScreen.screenID
+                            && item.memoryID!=currentMemory.memoryID
+                            && item.storageID!=currentStorage.storageID
+                            && item.operatingSystemID!= currentOS.operatingSystemID
+                            && item.status!= status ? false:true} onClick={onEditButtonPressed} className={`${item && item.status != status? "bg-acceptColor hover:font-bold":"disabled:bg-acceptColor/50"} text-white px-4 py-2 rounded-md`}>Confirm</button>
                     </div>
                     <div className="h-6" />
                 </div>
