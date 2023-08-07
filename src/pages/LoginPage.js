@@ -18,7 +18,7 @@ export default function LoginPage() {
             Sign In
           </CustomText>
           <div className="flex items-center justify-center mt-8">
-            <p className="pr-3">Username</p>
+            <p className="pr-3 w-24">Username</p>
             <input
               value={username}
               onChange={(event) => setUsername(event.target.value)}
@@ -27,7 +27,7 @@ export default function LoginPage() {
             />
           </div>
           <div className="flex items-center justify-center mt-2">
-            <p className="pr-3">Password</p>
+            <p className="pr-3 w-24">Password</p>
             <input
               value={password}
               onChange={(event) => setPassword(event.target.value)}

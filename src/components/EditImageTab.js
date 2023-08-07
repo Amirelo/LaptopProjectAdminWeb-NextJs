@@ -68,9 +68,9 @@ export default function EditImageTab({
     <div className=" w-full h-full top-0 left-0 fixed">
       <button
         onClick={onBackgroundPressed}
-        className="bg-gray-600/20 fixed w-full h-full "
+        className="bg-gray-600/20 fixed w-full h-full"
       ></button>
-      <div className="absolute w-1/2 left-1/3 top-8 h-fit rounded-2xl bg-secondaryColor border border-inputBorderColor">
+      <div className="absolute mt-20 w-1/2 left-1/3 top-8 h-fit rounded-2xl bg-secondaryColor border border-inputBorderColor">
         <h1 className="text-center mt-4 text-lg font-bold text-white">
           {item ? "Edit Product Image" : "Add Product Image"}
         </h1>

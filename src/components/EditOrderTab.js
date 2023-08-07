@@ -54,7 +54,7 @@ export default function EditOrderTab({
         onClick={onBackgroundPressed}
         className="bg-gray-600/20 fixed w-full h-full "
       ></button>
-      <div className="absolute w-1/2 left-1/4 top-8 h-fit rounded-2xl bg-secondaryColor border">
+      <div className="absolute mt-20 w-1/2 left-1/3 top-8 h-fit rounded-2xl bg-secondaryColor border">
         <h1 className="text-center  text-2xl pt-5 font-bold text-white">
           {item ? "Edit Order Status" : ""}
         </h1>
@@ -62,6 +62,7 @@ export default function EditOrderTab({
           <p className="w-1/4 mr-2 text-white">Order number</p>
           <input
             className="bg-mainSubColor ps-2 flex-1 py-2 border rounded-md"
+            disabled='true'
             placeholder="Order number"
             contentEditable="false"
             value={itemOrderID}

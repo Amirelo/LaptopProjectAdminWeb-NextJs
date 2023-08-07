@@ -34,7 +34,7 @@ export default function EditBrandTab({ onBackgroundPressed, onDeletePress, item 
     return (
         <div className=" w-full h-full top-0 left-0 fixed">
             <button onClick={onBackgroundPressed} className="bg-gray-600/20 fixed w-full h-full "></button>
-            <div className="absolute w-1/2 left-1/3 top-16 h-fit rounded-2xl bg-secondaryColor border border-inputBorderColor">
+            <div className="absolute mt-20 w-1/2 left-1/3 top-16 h-fit rounded-2xl bg-secondaryColor border">
                 <h1 className="text-center  text-2xl pt-5 font-bold text-white">{item ? "Edit Brand" : "Add Brand"}</h1>
                 <div className="flex flex-row items-center justify-center mx-4 mt-6">
                     <p className=" mr-2 text-white">Brand name</p>

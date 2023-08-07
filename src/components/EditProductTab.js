@@ -199,7 +199,7 @@ export default function EditProductTab({
 
         <div className="mt-4 flex flex-row justify-between">
           <div className="flex flex-row items-center mx-4 flex-1">
-            <p className=" mr-2 text-white">Model code</p>
+            <p className=" mr-2 w-24 text-white">Model code</p>
             <input
               className="bg-mainSubColor ps-2 flex-1 w-1/4 py-2 border rounded-md"
               placeholder="Model code"
@@ -209,7 +209,7 @@ export default function EditProductTab({
           </div>
 
           <div className="flex flex-row items-center mx-4 flex-1">
-            <p className=" mr-2 text-white">Rls Date</p>
+            <p className=" mr-2 w-24 text-white">Rls Date</p>
             <input
               className="bg-mainSubColor ps-2 flex-1 w-1/4 py-2 border rounded-md"
               placeholder="Released date"
@@ -221,7 +221,7 @@ export default function EditProductTab({
 
         <div className="mt-4 flex flex-row justify-between">
           <div className="flex flex-row items-center mx-4 flex-1">
-            <p className=" mr-2 text-white">Original Price</p>
+            <p className=" mr-2 w-24 text-white">Original Price</p>
             <input
               className="bg-mainSubColor ps-2 flex-1 w-1/4 py-2 border rounded-md"
               placeholder="Price"
@@ -231,7 +231,7 @@ export default function EditProductTab({
           </div>
 
           <div className="flex flex-row items-center mx-4 flex-1">
-            <p className=" mr-2 text-white">Onsale</p>
+            <p className=" mr-2 w-24 text-white">Onsale</p>
             <input
               className="bg-mainSubColor ps-2 flex-1 w-1/4 py-2 border rounded-md"
               placeholder="Onsale"
@@ -243,7 +243,7 @@ export default function EditProductTab({
 
         <div className="mt-4 flex flex-row justify-between">
           <div className="flex flex-row items-center mx-4 flex-1">
-            <p className=" mr-2 text-white">Current Price</p>
+            <p className=" mr-2 w-24 text-white">Current Price</p>
             <input
               className="bg-mainSubColor ps-2 flex-1 w-1/4 py-2 border rounded-md"
               placeholder="Price"
@@ -253,7 +253,7 @@ export default function EditProductTab({
           </div>
 
           <div className="flex flex-row items-center mx-4 flex-1">
-            <p className=" mr-2 text-white">Quantity</p>
+            <p className=" mr-2 w-24 text-white">Quantity</p>
             <input
               className="bg-mainSubColor ps-2 flex-1 w-1/4 py-2 border rounded-md"
               placeholder="Quantity"
@@ -265,7 +265,7 @@ export default function EditProductTab({
 
         <div className="mt-4 flex flex-row justify-between">
           <div className="flex flex-row items-center mx-4 flex-1">
-            <p className=" mr-2 text-white">Length</p>
+            <p className=" mr-2 w-16 text-white">Length</p>
             <input
               className="bg-mainSubColor ps-2 flex-1 w-1/4 py-2 border rounded-md"
               placeholder="Length"
@@ -275,7 +275,7 @@ export default function EditProductTab({
           </div>
 
           <div className="flex flex-row items-center mx-4 flex-1">
-            <p className=" mr-2 text-white">Width</p>
+            <p className=" mr-2 w-16 text-white">Width</p>
             <input
               className="bg-mainSubColor ps-2 flex-1 w-1/4 py-2 border rounded-md"
               placeholder="Width"
@@ -285,7 +285,7 @@ export default function EditProductTab({
           </div>
 
           <div className="flex flex-row items-center mx-4 flex-1">
-            <p className=" mr-2 text-white">Height</p>
+            <p className=" mr-2 w-16 text-white">Height</p>
             <input
               className="bg-mainSubColor ps-2 flex-1 w-1/4 py-2 border rounded-md"
               placeholder="Height"
@@ -294,7 +294,7 @@ export default function EditProductTab({
             />
           </div>
           <div className="flex flex-row items-center mx-4 flex-1">
-            <p className=" mr-2 text-white">Weight</p>
+            <p className=" mr-2 w-16 text-white">Weight</p>
             <input
               className="bg-mainSubColor ps-2 flex-1 w-1/4 py-2 border rounded-md"
               placeholder="Weight"
@@ -368,7 +368,7 @@ export default function EditProductTab({
 
         <div className="mt-4 flex flex-row justify-between">
           <div className="flex flex-row items-center mx-4 flex-1">
-            <p className=" mr-2 text-white">Brand</p>
+            <p className=" mr-2 w-12 text-white">Brand</p>
             <select
               onChange={(event) =>
                 setCurrentBrand(listBrands[event.target.value - 1])
@@ -398,7 +398,7 @@ export default function EditProductTab({
           </div>
 
           <div className="flex flex-row items-center mx-4 flex-1">
-            <p className=" mr-2 text-white">Screen</p>
+            <p className=" mr-2 w-14 text-white">Screen</p>
             <select
               onChange={(event) =>
                 setCurrentScreen(listScreens[event.target.value - 1])
@@ -430,7 +430,7 @@ export default function EditProductTab({
 
         <div className="mt-4 flex flex-row justify-between ">
           <div className="flex flex-row items-center mx-4 flex-1">
-            <p className=" mr-2 text-white">RAM</p>
+            <p className=" mr-2 w-12 text-white">RAM</p>
             <select
               onChange={(event) =>
                 setCurrentMemory(listMemories[event.target.value - 1])
@@ -468,7 +468,7 @@ export default function EditProductTab({
           </div>
 
           <div className="flex flex-row items-center mx-4 flex-1">
-            <p className=" mr-2 text-white">Storage</p>
+            <p className=" mr-2 w-14 text-white">Storage</p>
             <select
               onChange={(event) =>
                 setCurrentStorage(listStorages[event.target.value - 1])
