@@ -8,13 +8,9 @@ import { AuthProvider } from '@/services/AuthContext';
 export default function Home() {
   return (
     <div className='h-full '>
-
-      {/* <NavigationBar/> */}
-      {/* <div className='ms-72 bg-white pt-8 ps-4'> */}
       <AuthProvider>
         <AppNavigation />
       </AuthProvider>
-      {/* </div> */}
     </div>
   )
 }

@@ -4,7 +4,7 @@ export default function ActionTop({onEditPressed, onItemPerPageChange, setAddBut
     return (
         <div className={`flex flex-row items-center  pt-4 ${setAddButtonDisplay==false? "justify-end":"justify-between"}`}>
 
-            <button onClick={onEditPressed} className={`bg-mainColor px-6 py-3 rounded-md text-white hover:font-bold ${setAddButtonDisplay==false? "hidden":""}`}>Add</button>
+            <button onClick={onEditPressed} className={`bg-primaryColor px-6 py-3 rounded-md text-white hover:font-bold ${setAddButtonDisplay==false? "hidden":""}`}>Add</button>
 
             <div className={`flex flex-row`}>
                 <p>Show&nbsp;</p>

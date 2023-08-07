@@ -66,7 +66,6 @@ export const insertProdct = async (
     productPrice,
     productQuantity,
     releasedDate,
-    totalRating,
     modelCode,
     onSale,
     currentPrice,
@@ -77,7 +76,6 @@ export const insertProdct = async (
     width,
     height,
     weight,
-    status,
     brandID,
     screenID,
     operatingSystemID,
@@ -89,7 +87,6 @@ export const insertProdct = async (
         productPrice: productPrice,
         productQuantity: productQuantity,
         releasedDate: releasedDate,
-        totalRating: totalRating,
         modelCode: modelCode,
         onSale: onSale,
         currentPrice: currentPrice,
@@ -100,7 +97,6 @@ export const insertProdct = async (
         width: width,
         height: height,
         weight: weight,
-        status: status,
         brandID: brandID,
         screenID: screenID,
         operatingSystemID: operatingSystemID,
@@ -108,6 +104,7 @@ export const insertProdct = async (
         memoryID: memoryID,
         storageID: storageID
     }
+    console.log(data)
     const res = await axiosInstance.post('/product/insert-product-info.php', data);
     return res.data;
 }
@@ -345,7 +342,21 @@ export const insertProductImage = async (imageLink, status, productID) => {
         status: status,
         productID: productID
     }
+    console.log(data)
     const res = await axiosInstance.post('/productImage/insert-product-image-info.php', data);
+    return res.data;
+}
+
+export const updateProductByImageID = async (productImageID, imageLink, status, productID) => {
+    const data = {
+        productImageID: productImageID,
+        productImageLink: imageLink,
+        status: status,
+        productID: productID
+    }
+    console.log(data)
+    const res = await axiosInstance.post('/productImage/update-product-image-info.php', data);
+    console.log(res);
     return res.data;
 }
 

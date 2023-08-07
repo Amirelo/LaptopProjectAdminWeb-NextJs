@@ -1,7 +1,7 @@
 export default function CustomButton({ children, onClick, background, buttonStyle }) {
   return (
     <button
-      className={`${buttonStyle ? styles[buttonStyle] : ""} 
+      className={`${buttonStyle ? styles[buttonStyle] : "m-0 p-0"} 
       ${background ? `bg-${background}Color` : " bg-primaryColor"}`}
       onClick={onClick}
     >

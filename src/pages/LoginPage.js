@@ -4,7 +4,6 @@ import CustomButton from "@/components/atoms/CustomButton";
 import CustomText from "@/components/atoms/CustomText";
 import CustomView from "@/components/atoms/CustomView";
 import { AuthContext } from "@/services/AuthContext";
-import Image from "next/image";
 import { useContext, useState } from "react";
 
 export default function LoginPage() {
@@ -14,7 +13,7 @@ export default function LoginPage() {
 
   return (
       <CustomView color={'none'} type={'row'}>
-        <CustomView type={"login"}>
+        <CustomView color={'backgroundInput'} type={"login"}>
           <CustomText textStyle={"header"} textColor={"primary"}>
             Sign In
           </CustomText>

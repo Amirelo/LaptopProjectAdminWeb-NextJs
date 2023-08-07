@@ -4,12 +4,11 @@ import AnalyticTab from '@/components/AnalyticTab'
 import { priceFormat } from '@/utils/helper';
 import { getAllBrands, getAllProduct, getAllUserOrders, getAllUsers } from '@/services/AppService';
 import { useEffect, useState } from 'react';
-import ProductListItem from '@/components/ProductListItem';
-import UserOrderList from '@/components/UserOrderList';
-import { ArcElement, BarController, BarElement, CategoryScale, Chart, Legend, LineElement, LinearScale, PointElement, Ticks, Title, Tooltip } from 'chart.js';
-import { Bar, Line, Pie } from 'react-chartjs-2';
+import { ArcElement, BarElement, CategoryScale, Chart, Legend, LineElement, LinearScale, PointElement, Ticks, Title, Tooltip } from 'chart.js';
+import { Bar, Pie } from 'react-chartjs-2';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import EditOrderTab from '@/components/EditOrderTab';
+import CustomView from '@/components/atoms/CustomView';
 
 Chart.register(LinearScale, CategoryScale, BarElement, ArcElement,
     Title, Legend, ChartDataLabels, Tooltip, PointElement, LineElement)
@@ -180,7 +179,7 @@ export default function DashboardPage() {
                 stack: 'stack1',
                 type: 'bar',
                 label: 'Total orders',
-                backgroundColor: ['#95B2E5', '#D3A1E5', '#E6D2AF', '#C5E8CF', '#B5E9AA', '#E8B7D1'],
+                backgroundColor: ['#95B2E5'],
                 data: [getMonthlyOrders(currentMonth - 4), getMonthlyOrders(currentMonth - 3), getMonthlyOrders(currentMonth - 2), getMonthlyOrders(currentMonth - 1), getMonthlyOrders(currentMonth), getMonthlyOrders(currentMonth + 1)]
             },
             {
@@ -253,17 +252,16 @@ export default function DashboardPage() {
 
 
     return (
-        isLoading == false ?
-            <>
+            <CustomView backgroundColor={'none'} type={'bodySpacing'}>
                 {/* Analytics */}
-                <div className='mt-8'>
+                <div>
 
                     {showEditTab ?
                         <EditOrderTab item={currentOrder} onBackgroundPressed={() => setShowEditTab(false)} onDeletePress={onFinishedHandlingItem} />
                         : <></>}
 
 
-                    <p className='font-bold'>Analytics</p>
+                    <p className='font-bold text-lg'>Analytics</p>
                     {/* Analytic tab */}
                     <div className='flex flex-row justify-between pr-4'>
                         <AnalyticTab name={"Total revenue"} amount={priceFormat(totalRevenue)} percent={todayRevenue != 0 ? '+ ' + (todayRevenue / totalRevenue).toFixed(1) + "%" : "+ 0%"} />
@@ -283,12 +281,12 @@ export default function DashboardPage() {
                                     <th>Order date</th>
                                     <th>Status</th>
                                 </tr>
-                                {listUserOrders.sort((a, b) => b.pendingDate.localeCompare(a.pendingDate)).slice(0, 6).map(userOrder => {
+                                {listUserOrders.sort((a, b) => b.userOrderID -a.userOrderID).slice(0, 6).map(userOrder => {
                                     return (
-                                        <tr className="even:bg-sky-50" key={userOrder.userOrderID}>
-                                            <td className='border text-center '>TSTRN{userOrder.userOrderID}</td>
-                                            <td className='border text-center'>{userOrder.pendingDate}</td>
-                                            <td className={`text-processColor border text-center font-medium ${userOrder.status == 1 ? "animate-bounce text-processingColor" : userOrder.status == 0 ? "text-cancelColor" : userOrder.status == 3 ? "text-reviewColor" : userOrder.status == 4 ? "text-acceptColor" : ""}`}>
+                                        <tr className="even:bg-borderColor" key={userOrder.userOrderID}>
+                                            <td className='border text-center '>{userOrder.userOrderID}</td>
+                                            <td className='border text-center line-clamp-1'>{userOrder.pendingDate}</td>
+                                            <td className={`text-processColor border text-center font-medium ${userOrder.status == 1 ? "animate-bounce text-processColor" : userOrder.status == 0 ? "text-errColor" : userOrder.status == 3 ? "text-warnColor" : userOrder.status == 4 ? "text-successColor" : ""}`}>
                                                 {userOrder.status <= 3 ?
                                                     <button onClick={() => onEditIconPressed(userOrder)} className="hover:font-bold">{statusArr[userOrder.status]}</button>
                                                     :
@@ -394,7 +392,7 @@ export default function DashboardPage() {
                                 {listProducts.sort((a, b) => b.sold - a.sold).slice(0, 6).map(prod => {
                                     if (prod.sold > 0) {
                                         return (
-                                            <tr className='even:bg-sky-50' key={prod.productID}>
+                                            <tr className='even:bg-borderColor' key={prod.productID}>
                                                 <td className='border text-center line-clamp-2 overflow-hidden'>{prod.productName}</td>
                                                 <td className='border text-center'>{prod.sold}</td>
                                             </tr>
@@ -426,7 +424,7 @@ export default function DashboardPage() {
                                 {listProducts.sort((a, b) => b.totalRating - a.totalRating).slice(0, 6).map(prod => {
                                     if (prod.sold > 0) {
                                         return (
-                                            <tr className='even:bg-sky-50' key={prod.productID}>
+                                            <tr className='even:bg-borderColor' key={prod.productID}>
                                                 <td className='border text-center line-clamp-2 overflow-hidden'>{prod.productName}</td>
                                                 <td className='border text-center'>{prod.totalRating}</td>
                                             </tr>
@@ -461,9 +459,7 @@ export default function DashboardPage() {
 
                 <div className='h-12'></div>
 
-            </>
-            : <></>
-
+            </CustomView>
     )
 
 }

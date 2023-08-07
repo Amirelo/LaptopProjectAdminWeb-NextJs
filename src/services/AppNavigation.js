@@ -16,6 +16,7 @@ import UserPage from "@/pages/UserPage";
 import { useContext, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthContext, useAuth } from "./AuthContext";
+import CustomView from "@/components/atoms/CustomView";
 
 export default function AppNavigation() {
     const {isLoggedIn} = useContext(AuthContext);
@@ -30,7 +31,7 @@ export default function AppNavigation() {
                     </Routes>
                     : <>
                         <NavigationBar />
-                        <div className='ms-72 bg-white pt-8 ps-4'>
+                        <CustomView type={'body'} color={'white'}>
                             <Routes >
 
                                 <Route path="/" element={<DashboardPage />} />
@@ -46,7 +47,7 @@ export default function AppNavigation() {
                                 <Route path="/opersys" element={<OSPage />} />
                             </Routes>
 
-                        </div>
+                        </CustomView>
                     </>}
             </BrowserRouter>
         </div>
