@@ -9,6 +9,7 @@ import DeleteMessage from "@/components/DeleteMessage";
 import EditProductTab from "@/components/EditProductTab";
 import EditImageTab from "@/components/EditImageTab";
 import { AuthContext } from "@/services/AuthContext";
+import CustomView from "@/components/atoms/CustomView";
 
 export default function ProductPage() {
   const { searchText } = useContext(AuthContext);
@@ -82,10 +83,11 @@ export default function ProductPage() {
 
     setPageCount(Math.ceil(prodRes.data.length / itemPerPage));
     console.log("Count:", Math.ceil(prodRes.data.length / itemPerPage));
+    dataSort(prodRes.data);
   };
 
-  const dataSort = () => {
-    let myList = [...listProducts];
+  const dataSort = (list) => {
+    let myList = [...list];
     if (searchText != null) {
       myList = myList.filter((item) =>
         item.productName.toLowerCase().includes(searchText.toLowerCase())
@@ -97,9 +99,9 @@ export default function ProductPage() {
         myList.sort((a, b) => a.productName.localeCompare(b.productName));
         break;
       default:
-        myList.sort((a, b) => a.brandID - b.brandID);
+        myList.sort((a, b) => a.productID - b.productID);
     }
-    myList.sort((a, b) => b.productStatus - a.productStatus);
+    myList.sort((a, b) => b.status - a.status);
     console.log(myList);
     setPageCount(Math.ceil(myList.length / itemPerPage));
     console.log("Count:", Math.ceil(myList.length / itemPerPage));
@@ -112,12 +114,12 @@ export default function ProductPage() {
   }, [dataChange]);
 
   useEffect(() => {
-    dataSort();
+    dataSort(listProducts);
     console.log(searchText);
   }, [searchText]);
 
   return (
-    <>
+    <CustomView type={'bodySpacing'}>
       <div className="mr-3">
         {showDeleteTab ? (
           <DeleteMessage
@@ -319,6 +321,6 @@ export default function ProductPage() {
         <PaginationTab pageCount={pageCount} onPageChange={setCurrentPage} />
         <div className="h-32"></div>
       </div>
-    </>
+    </CustomView>
   );
 }

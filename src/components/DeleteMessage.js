@@ -8,7 +8,7 @@ export default function DeleteMessage({onBackgroundPressed, onDeletePress}) {
                 <p className="text-center text-white">Do you want to delete this item</p>
                 <div className="flex flex-row items-center justify-around mt-6">
                     <button onClick={onBackgroundPressed} className="bg-errColor hover:font-bold text-white px-4 py-2 rounded-md">Cancel</button>
-                    <button onClick={onDeletePress} className="bg-successColor hover:font-bold text-white px-4 py-2 rounded-md">Delete</button>
+                    <button onClick={onDeletePress} className="bg-successColor hover:font-bold text-white px-4 py-2 rounded-md">Deactivate</button>
                 </div>
                 <div className="h-6" />
             </div>
