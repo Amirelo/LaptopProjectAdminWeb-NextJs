@@ -9,11 +9,16 @@ export default function SpecsMenu({ selection, setSelection }) {
 
   const subSelectionPressed = (name) => {
     setSubSelection(name);
-    setSelection('');
+    setSelection(name);
   };
 
   useEffect(() => {
-    if (selection != "nav3") {
+    if (selection != "Brands" 
+    && selection != "Processors" 
+    && selection != "Screens" 
+    && selection != "RAM" 
+    && selection != "Storages" && 
+    selection != "OS") {
       setSubSelection("sub0");
     }
   }, [selection]);
@@ -24,7 +29,7 @@ export default function SpecsMenu({ selection, setSelection }) {
         to={"/brands"}
         onClick={() => [subSelectionPressed("Brands"), setSearchText("")]}
         className={`px-12 py-2 mt-2 rounded-md flex flex-row transition-colors duration-200 ease-out ${
-          subSelection == "Brands" ? "bg-primaryColor text-white" : "hover:bg-primaryColor"
+          subSelection == "Brands" ? "bg-primaryColor text-textVariantColor font-bold" : "hover:bg-primaryColor"
         }`}
       >
         Brand
@@ -34,7 +39,7 @@ export default function SpecsMenu({ selection, setSelection }) {
         onClick={() => [subSelectionPressed("Screens"), setSearchText("")]}
         className={`px-12 py-2 mt-2 rounded-md flex flex-row transition-colors duration-200 ease-out ${
           subSelection == "Screens"
-            ? "bg-primaryColor text-white"
+            ? "bg-primaryColor text-textVariantColor font-bold"
             : "hover:bg-primaryColor"
         }`}
       >
@@ -45,7 +50,7 @@ export default function SpecsMenu({ selection, setSelection }) {
         onClick={() => [subSelectionPressed("Processors"), setSearchText("")]}
         className={`px-12 py-2 mt-2 rounded-md flex flex-row transition-colors duration-200 ease-out ${
           subSelection == "Processors"
-            ? "bg-primaryColor text-white"
+            ? "bg-primaryColor text-textVariantColor font-bold"
             : "hover:bg-primaryColor"
         }`}
       >
@@ -55,7 +60,7 @@ export default function SpecsMenu({ selection, setSelection }) {
         to={"/memories"}
         onClick={() => [subSelectionPressed("RAM"), setSearchText("")]}
         className={`px-12 py-2 mt-2 rounded-md flex flex-row transition-colors duration-200 ease-out ${
-          subSelection == "RAM" ? "bg-primaryColor text-white" : "hover:bg-primaryColor"
+          subSelection == "RAM" ? "bg-primaryColor text-textVariantColor" : "hover:bg-primaryColor"
         }`}
       >
         Memory/RAM
@@ -65,7 +70,7 @@ export default function SpecsMenu({ selection, setSelection }) {
         onClick={() => [subSelectionPressed("Storages"), setSearchText("")]}
         className={`px-12 py-2 mt-2 rounded-md flex flex-row transition-colors duration-200 ease-out ${
           subSelection == "Storages"
-            ? "bg-primaryColor text-white"
+            ? "bg-primaryColor text-textVariantColor"
             : "hover:bg-primaryColor"
         }`}
       >
@@ -75,7 +80,7 @@ export default function SpecsMenu({ selection, setSelection }) {
         to={"/opersys"}
         onClick={() => [subSelectionPressed("OS"), setSearchText("")]}
         className={`px-12 py-2 mt-2 rounded-md flex flex-row transition-colors duration-200 ease-out ${
-          subSelection == "OS" ? "bg-primaryColor text-white" : "hover:bg-primaryColor"
+          subSelection == "OS" ? "bg-primaryColor text-textVariantColor" : "hover:bg-primaryColor"
         }`}
       >
         OS

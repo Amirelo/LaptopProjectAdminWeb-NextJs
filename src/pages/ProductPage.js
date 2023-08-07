@@ -196,7 +196,7 @@ export default function ProductPage() {
                   className={`h-36 ${
                     product.status == 0
                       ? "bg-slate-500/25"
-                      : "even:bg-borderColor"
+                      : "even:bg-backgroundInputColor/25"
                   }`}
                   key={product.productID}
                 >

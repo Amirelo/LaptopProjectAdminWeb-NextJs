@@ -283,7 +283,7 @@ export default function DashboardPage() {
                                 </tr>
                                 {listUserOrders.sort((a, b) => b.userOrderID -a.userOrderID).slice(0, 6).map(userOrder => {
                                     return (
-                                        <tr className="even:bg-borderColor" key={userOrder.userOrderID}>
+                                        <tr className="even:bg-backgroundInputColor/25" key={userOrder.userOrderID}>
                                             <td className='border text-center '>{userOrder.userOrderID}</td>
                                             <td className='border text-center line-clamp-1'>{userOrder.pendingDate}</td>
                                             <td className={`text-processColor border text-center font-medium ${userOrder.status == 1 ? "animate-bounce text-processColor" : userOrder.status == 0 ? "text-errColor" : userOrder.status == 3 ? "text-warnColor" : userOrder.status == 4 ? "text-successColor" : ""}`}>
@@ -392,7 +392,7 @@ export default function DashboardPage() {
                                 {listProducts.sort((a, b) => b.sold - a.sold).slice(0, 6).map(prod => {
                                     if (prod.sold > 0) {
                                         return (
-                                            <tr className='even:bg-borderColor' key={prod.productID}>
+                                            <tr className='even:bg-backgroundInputColor/25' key={prod.productID}>
                                                 <td className='border text-center line-clamp-2 overflow-hidden'>{prod.productName}</td>
                                                 <td className='border text-center'>{prod.sold}</td>
                                             </tr>
@@ -424,7 +424,7 @@ export default function DashboardPage() {
                                 {listProducts.sort((a, b) => b.totalRating - a.totalRating).slice(0, 6).map(prod => {
                                     if (prod.sold > 0) {
                                         return (
-                                            <tr className='even:bg-borderColor' key={prod.productID}>
+                                            <tr className='even:bg-backgroundInputColor/25' key={prod.productID}>
                                                 <td className='border text-center line-clamp-2 overflow-hidden'>{prod.productName}</td>
                                                 <td className='border text-center'>{prod.totalRating}</td>
                                             </tr>

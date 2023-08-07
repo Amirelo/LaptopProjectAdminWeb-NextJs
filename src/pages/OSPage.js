@@ -8,6 +8,7 @@ import PaginationTab from "@/components/PaginationTab";
 import DeleteMessage from "@/components/DeleteMessage";
 import EditOSTab from "@/components/EditOSTab";
 import { AuthContext } from "@/services/AuthContext";
+import CustomView from "@/components/atoms/CustomView";
 
 
 export default function OSPage() {
@@ -67,8 +68,8 @@ export default function OSPage() {
         setPageCount(listOS.length / event.target.value)
     }
 
-    const dataSort = () => {
-        let myList = [...listOS]
+    const dataSort = (list) => {
+        let myList = [...list]
         if (searchText != null) {
             myList = myList.filter(item => ((item.version+" "+item.type).toLowerCase().includes(searchText.toLowerCase())));
         }
@@ -93,7 +94,7 @@ export default function OSPage() {
 
         setPageCount(Math.ceil(osRes.data.length / itemPerPage))
         console.log("Count:", Math.ceil(osRes.data.length / itemPerPage));
-
+        dataSort(osRes.data);
     }
 
     const checkStatus = (status) => {
@@ -108,12 +109,11 @@ export default function OSPage() {
     }, [dataChange])
 
     useEffect(() => {
-        dataSort();
+        dataSort(listOS);
     }, [searchText])
 
     return (
-        isLoading == false ?
-            <>
+            <CustomView type={'bodySpacing'}>
                 <div className="mr-3">
 
                 {showDeleteTab ?
@@ -135,7 +135,7 @@ export default function OSPage() {
 
                         {listSort.slice((currentPage - 1) * itemPerPage, itemPerPage * currentPage).map(operSys => {
                             return (
-                                <tr className={operSys.status == 0 ? "bg-slate-500/25" : "even:bg-sky-50"} key={operSys.operatingSystemID}>
+                                <tr className={operSys.status == 0 ? "bg-slate-500/25" : "even:bg-backgroundInputColor/25"} key={operSys.operatingSystemID}>
                                     <td className="text-center border">{operSys.operatingSystemID}</td>
                                     <td className=" border">{operSys.version + " " + operSys.type }</td>
                                     
@@ -172,8 +172,7 @@ export default function OSPage() {
                     <div className="h-32"></div>
 
                 </div>
-            </>
-            : <></>
+            </CustomView>
 
     )
 }

@@ -7,6 +7,7 @@ import PaginationTab from "@/components/PaginationTab";
 import DeleteMessage from "@/components/DeleteMessage";
 import EditScreenTab from "@/components/EditScreenTab";
 import { AuthContext } from "@/services/AuthContext";
+import CustomView from "@/components/atoms/CustomView";
 
 
 export default function ScreenPage() {
@@ -14,8 +15,6 @@ export default function ScreenPage() {
 
     const [listScreens, setListScreens] = useState([]);
     const [listSort, setListSort] = useState([]);
-
-    const [isLoading, setIsLoading] = useState(false);
 
     const [currentPage, setCurrentPage] = useState(1);
     const [itemPerPage, setItemPerPage] = useState(5);
@@ -69,8 +68,8 @@ export default function ScreenPage() {
         setPageCount(listScreens.length / event.target.value)
     }
 
-    const dataSort = () => {
-        let myList = [...listScreens]
+    const dataSort = (list) => {
+        let myList = [...list]
         if (searchText != null) {
             myList = myList.filter(item => (item.resolution.toLowerCase().includes(searchText.toLowerCase())));
         }
@@ -95,7 +94,7 @@ export default function ScreenPage() {
 
         setPageCount(Math.ceil(screenRes.data.length / itemPerPage))
         console.log("Count:", Math.ceil(screenRes.data.length / itemPerPage));
-
+        dataSort(screenRes.data);
     }
 
     useEffect(() => {
@@ -104,12 +103,11 @@ export default function ScreenPage() {
 
 
     useEffect(() => {
-        dataSort();
+        dataSort(listScreens);
     }, [searchText])
 
     return (
-        isLoading == false ?
-            <>
+            <CustomView type={'bodySpacing'}>
                 <div className="mr-3">
 
                     {showDeleteTab ?
@@ -132,7 +130,7 @@ export default function ScreenPage() {
 
                         {listSort.slice((currentPage - 1) * itemPerPage, itemPerPage * currentPage).map(screen => {
                             return (
-                                <tr className={screen.status == 0 ? "bg-slate-500/25" : "even:bg-sky-50"} key={screen.screenID}>
+                                <tr className={screen.status == 0 ? "bg-slate-500/25" : "even:bg-backgroundInputColor/25"} key={screen.screenID}>
                                     <td className="text-center border">{screen.screenID}</td>
                                     <td className="text-center border">{screen.resolution}</td>
                                     <td className="text-center border">{screen.screenSize}</td>
@@ -169,8 +167,7 @@ export default function ScreenPage() {
                     <PaginationTab pageCount={pageCount} onPageChange={setCurrentPage} />
                     <div className="h-32"></div>
                 </div>
-            </>
-            : <></>
+            </CustomView>
 
     )
 }
